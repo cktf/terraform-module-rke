@@ -1,6 +1,6 @@
-# Terraform Null RKE module
+# Terraform Module RKE
 
-**RKE** is a Terraform module defining the required resources for creating a `rke2`, `k3s` cluster using remote shell connection
+**RKE** is a Terraform module defining the required resources for creating a `rke2`, `k3s` cluster using `remote shell connection`
 
 ## Installation
 
@@ -14,13 +14,26 @@ terraform init
 
 ```hcl
 module "rke" {
-  source = "cktf/rke/null"
+  source = "cktf/rke/module"
 
-  name        = "platform"
-  description = "Platform Network"
-  external    = "external"
-  subnets     = ["192.168.1.0/24", "192.168.2.0/24"]
-  tenant_id   = data.openstack_identity_project_v3.this.id
+  name       = "platform"
+  network_id = module.network.id
+  masters = {
+    linux = {
+      count       = 1
+      subnet      = "192.168.1.0/24"
+      image_name  = "ubuntu"
+      flavor_name = "m1.small"
+    }
+  }
+  workers = {
+    linux = {
+      count       = 2
+      subnet      = "192.168.2.0/24"
+      image_name  = "ubuntu"
+      flavor_name = "m1.small"
+    }
+  }
 }
 ```
 
@@ -33,5 +46,3 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT]()
-
----
