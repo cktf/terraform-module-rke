@@ -10,19 +10,33 @@ variable "type" {
   }
 }
 
-variable "name" {
+variable "rke_version" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "RKE Name"
+  description = "RKE Version"
 }
 
-# variable "version" {
-#   type        = string
-#   default     = ""
-#   sensitive   = false
-#   description = "RKE Version"
-# }
+variable "channel" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "RKE Channel"
+}
+
+variable "disable" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "RKE Disable"
+}
+
+variable "loadbalancer" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "RKE Servers Load Balancer Host"
+}
 
 variable "masters" {
   type = map(object({

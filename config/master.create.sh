@@ -13,17 +13,18 @@ install_packages() {
 install_k3s() {
     echo Installing K3S
 
-    export INSTALL_K3S_VERSION=${version}
-    export INSTALL_K3S_CHANNEL=${channel}
-    export K3S_CLUSTER_INIT=${???}
-
+    export INSTALL_K3S_VERSION=${rke_version}
+    export INSTALL_K3S_CHANNEL=${rke_channel}
+    
     sudo mkdir -p /etc/rancher/k3s
     cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/k3s/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
-        server: "${leader_host}"
-        token: "${master_token}"
-        agent-token: "${worker_token}"
-        node-name: "${name}"
+        disable: "${rke_disable}"
+        # cluster-init: "${rke_is_leader}"
+        # server: "${rke_loadbalancer}"
+        token: "${rke_master_token}"
+        agent-token: "${rke_worker_token}"
+        node-name: "${node_name}"
         node-label:
             - "platform=linux"
         node-taint:
@@ -67,7 +68,7 @@ clear_cache() {
     echo Clearing Cache
     
     sudo rm -Rf /var/lib/apt/lists/*
-    sudo rm -Rf /tmp
+    sudo rm -Rf /tmp/*
 }
 
 install_packages

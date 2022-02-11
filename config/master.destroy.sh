@@ -28,7 +28,7 @@ clear_cache() {
     echo Clearing Cache
     
     sudo rm -Rf /var/lib/apt/lists/*
-    sudo rm -Rf /tmp
+    sudo rm -Rf /tmp/*
 }
 
 uninstall_packages
