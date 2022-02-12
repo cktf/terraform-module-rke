@@ -38,6 +38,13 @@ variable "loadbalancer" {
   description = "RKE Servers Load Balancer Host"
 }
 
+variable "registry" {
+  type        = string
+  default     = "https://registry.hub.docker.com/"
+  sensitive   = false
+  description = "RKE Registry"
+}
+
 variable "masters" {
   type = map(object({
     name       = string

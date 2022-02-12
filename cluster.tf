@@ -11,6 +11,7 @@ resource "null_resource" "master" {
     rke_loadbalancer = coalesce(var.loadbalancer, values(var.masters)[0].connection.host)
     rke_master_token = random_password.master_secret.result
     rke_worker_token = random_password.worker_secret.result
+    rke_registry = var.registry
     name             = each.value.name
     labels           = jsonencode(each.value.labels)
     taints           = jsonencode(each.value.taints)
@@ -54,6 +55,7 @@ resource "null_resource" "master" {
       rke_loadbalancer = self.triggers.rke_loadbalancer
       rke_master_token = self.triggers.rke_master_token
       rke_worker_token = self.triggers.rke_worker_token
+      rke_registry = self.triggers.rke_registry
       node_name        = self.triggers.name
       node_labels      = jsondecode(self.triggers.labels)
       node_taints      = jsondecode(self.triggers.taints)

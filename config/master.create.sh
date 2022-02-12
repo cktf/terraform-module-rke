@@ -19,22 +19,25 @@ install_k3s() {
     sudo mkdir -p /etc/rancher/k3s
     cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/k3s/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
-        disable: "${rke_disable}"
-        # cluster-init: "${rke_is_leader}"
-        # server: "${rke_loadbalancer}"
+        tls-san:
+            - "${rke_loadbalancer}"
+        disable: 
+            - "${rke_disable}"
+        cluster-init: "${rke_loadbalancer == ''}"
+        server: "${rke_loadbalancer}"
         token: "${rke_master_token}"
         agent-token: "${rke_worker_token}"
         node-name: "${node_name}"
         node-label:
             - "platform=linux"
         node-taint:
-            - "platform=linux"
+            - "k3s-controlplane=true:NoSchedule"
 	EOF
     cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/k3s/registries.yaml > /dev/null
         mirrors:
             docker.io:
                 endpoint:
-                    - "https://registry.docker.ir"
+                    - "${rke_registry}"
 	EOF
 
     curl -sfL https://get.k3s.io | sudo sh -
