@@ -24,18 +24,18 @@ variable "channel" {
   description = "RKE Channel"
 }
 
-variable "disable" {
-  type        = string
-  default     = ""
+variable "disables" {
+  type        = list(string)
+  default     = []
   sensitive   = false
-  description = "RKE Disable"
+  description = "RKE Disables"
 }
 
-variable "loadbalancer" {
+variable "load_balancer" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "RKE Servers Load Balancer Host"
+  description = "RKE Load Balancer"
 }
 
 variable "registry" {
@@ -48,8 +48,8 @@ variable "registry" {
 variable "masters" {
   type = map(object({
     name       = string
-    labels     = map(string)
-    taints     = map(string)
+    labels     = list(string)
+    taints     = list(string)
     connection = map(any)
   }))
   default     = {}
@@ -60,8 +60,8 @@ variable "masters" {
 variable "workers" {
   type = map(object({
     name       = string
-    labels     = map(string)
-    taints     = map(string)
+    labels     = list(string)
+    taints     = list(string)
     connection = map(any)
   }))
   default     = {}
@@ -72,8 +72,8 @@ variable "workers" {
 variable "windows_workers" {
   type = map(object({
     name       = string
-    labels     = map(string)
-    taints     = map(string)
+    labels     = list(string)
+    taints     = list(string)
     connection = map(any)
   }))
   default     = {}

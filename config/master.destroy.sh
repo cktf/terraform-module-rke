@@ -11,8 +11,8 @@ uninstall_packages() {
 uninstall_k3s() {
     echo Uninstalling K3S
 
-    sudo systemctl stop k3s-server.service
-    sudo systemctl disable k3s-server.service
+    sudo systemctl stop k3s.service
+    sudo systemctl disable k3s.service
     sudo /usr/local/bin/k3s-uninstall.sh
 }
 
@@ -32,5 +32,9 @@ clear_cache() {
 }
 
 uninstall_packages
-uninstall_k3s
+if [ "${cluster_type}" = "k3s" ]; then
+    uninstall_k3s
+elif [ "${cluster_type}" = "rke2" ]; then
+    uninstall_rke2
+fi
 clear_cache
