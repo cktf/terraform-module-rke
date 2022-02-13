@@ -40,7 +40,7 @@ variable "load_balancer" {
 
 variable "registry" {
   type        = string
-  default     = "https://registry.hub.docker.com/"
+  default     = "https://registry.hub.docker.com"
   sensitive   = false
   description = "RKE Registry"
 }
