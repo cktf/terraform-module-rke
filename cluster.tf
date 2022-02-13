@@ -9,6 +9,8 @@ resource "null_resource" "master" {
     cluster_disables      = jsonencode(var.disables)
     cluster_leader        = keys(var.masters)[0] == each.key
     cluster_load_balancer = coalesce(var.load_balancer, values(var.masters)[0].connection.host)
+    cluster_token_id      = random_password.token_id.result
+    cluster_token_secret  = random_password.token_secret.result
     cluster_master_token  = random_password.master_token.result
     cluster_worker_token  = random_password.worker_token.result
     cluster_registry      = var.registry
@@ -57,6 +59,8 @@ resource "null_resource" "master" {
       cluster_disables      = jsondecode(self.triggers.cluster_disables)
       cluster_leader        = self.triggers.cluster_leader
       cluster_load_balancer = self.triggers.cluster_load_balancer
+      cluster_token_id      = self.triggers.cluster_token_id
+      cluster_token_secret  = self.triggers.cluster_token_secret
       cluster_master_token  = self.triggers.cluster_master_token
       cluster_worker_token  = self.triggers.cluster_worker_token
       cluster_registry      = self.triggers.cluster_registry
@@ -87,6 +91,8 @@ resource "null_resource" "master" {
       cluster_disables      = jsondecode(self.triggers.cluster_disables)
       cluster_leader        = self.triggers.cluster_leader
       cluster_load_balancer = self.triggers.cluster_load_balancer
+      cluster_token_id      = self.triggers.cluster_token_id
+      cluster_token_secret  = self.triggers.cluster_token_secret
       cluster_master_token  = self.triggers.cluster_master_token
       cluster_worker_token  = self.triggers.cluster_worker_token
       cluster_registry      = self.triggers.cluster_registry

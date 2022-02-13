@@ -15,6 +15,7 @@ install_k3s() {
     sudo mkdir -p /etc/rancher/k3s
     cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/k3s/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
+        kube-apiserver-arg: ["enable-bootstrap-token-auth"]
         disable: [${join(",", [for item in cluster_disables : "\"${item}\""])}]
         tls-san: ["${cluster_load_balancer}"]
         cluster-init: "${cluster_leader}"
@@ -32,6 +33,37 @@ install_k3s() {
                     - "${cluster_registry}"
 	EOF
 
+    sudo mkdir -p /var/lib/rancher/k3s/server/manifests
+    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /var/lib/rancher/k3s/server/manifests/bootstrap.yaml > /dev/null
+        ---
+        apiVersion: v1
+        kind: Secret
+        metadata:
+            name: bootstrap-token-${cluster_token_id}
+            namespace: kube-system
+        type: bootstrap.kubernetes.io/token
+        stringData:
+            description: "bootstrap token"
+            token-id: ${cluster_token_id}
+            token-secret: ${cluster_token_secret}
+            usage-bootstrap-authentication: "true"
+            usage-bootstrap-signing: "true"
+            auth-extra-groups: system:bootstrappers:worker,system:bootstrappers:ingress
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+            name: bootstrap-admin
+        subjects:
+            - kind: Group
+              name: system:bootstrappers
+              apiGroup: rbac.authorization.k8s.io
+        roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: cluster-admin    
+	EOF
+
     curl -sfL https://get.k3s.io | sudo sh -
     sudo systemctl enable k3s.service
     sudo systemctl start k3s.service
@@ -46,6 +78,7 @@ install_rke2() {
     sudo mkdir -p /etc/rancher/rke2
     cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/rke2/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
+        kube-apiserver-arg: ["enable-bootstrap-token-auth"]
         disable: [${join(",", [for item in cluster_disables : "\"${item}\""])}]
         tls-san: ["${cluster_load_balancer}"]
         cluster-init: "${cluster_leader}"
@@ -61,6 +94,37 @@ install_rke2() {
             docker.io:
                 endpoint:
                     - "${cluster_registry}"
+	EOF
+
+    sudo mkdir -p /var/lib/rancher/rke2/server/manifests
+    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /var/lib/rancher/rke2/server/manifests/bootstrap.yaml > /dev/null
+        ---
+        apiVersion: v1
+        kind: Secret
+        metadata:
+            name: bootstrap-token-${cluster_token_id}
+            namespace: kube-system
+        type: bootstrap.kubernetes.io/token
+        stringData:
+            description: "bootstrap token"
+            token-id: ${cluster_token_id}
+            token-secret: ${cluster_token_secret}
+            usage-bootstrap-authentication: "true"
+            usage-bootstrap-signing: "true"
+            auth-extra-groups: system:bootstrappers:worker,system:bootstrappers:ingress
+        ---
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+            name: bootstrap-admin
+        subjects:
+            - kind: Group
+              name: system:bootstrappers
+              apiGroup: rbac.authorization.k8s.io
+        roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: cluster-admin    
 	EOF
     
     curl -sfL https://get.rke2.io | sudo sh -

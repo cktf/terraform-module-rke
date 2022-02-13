@@ -1,5 +1,9 @@
-# output "id" {
-#   value       = openstack_networking_network_v2.this.id
-#   description = "RKE ID"
-#   sensitive   = false
-# }
+output "ca_crt" {
+  value     = data.k8sbootstrap_auth.this.ca_crt
+  sensitive = true
+}
+
+output "kubeconfig" {
+  value     = data.k8sbootstrap_auth.this.kubeconfig
+  sensitive = true
+}

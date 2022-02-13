@@ -38,3 +38,24 @@ provider "registry.terraform.io/hashicorp/random" {
     "zh:f7605bd1437752114baf601bdf6931debe6dc6bfe3006eb7e9bb9080931dca8a",
   ]
 }
+
+provider "registry.terraform.io/nimbolus/k8sbootstrap" {
+  version     = "0.1.2"
+  constraints = "0.1.2"
+  hashes = [
+    "h1:d2sZfuRLQzuFODS13FFjKOlv62rBail2CQ/VU4rYMRQ=",
+    "zh:21f56d6d5d40405803bb887fd76c712b4e31d7a88e6e21dc8a79c215d60146f9",
+    "zh:465f1cc7aabaa27e1290f4895f2fb828649ccae80ef8962ba57bfad36f2fbaa7",
+    "zh:4f683f554977f650ade5729bb5b0ceebad6e9e611f9b6da23ae8f3156c759c11",
+    "zh:6046241185519f6354cff89d8a8563b0d82dfcfe495d5ee1813700664b876538",
+    "zh:6cf465f4d9f53dfaf3ae07d265d23c7a26f494026e06c9c70e254ff0dfabb55f",
+    "zh:7437ac80902d722c7533c6ddff7acb30ab2f55505d1b586aaa3cf7fcac5e1c35",
+    "zh:786eecc7e6c31100d64eefddb386f6070ff3b346ceadef200ea69f6719d6da23",
+    "zh:7a3e8e927c03a6932ee27ad69a0af41381141d49934702489694526f93de4e30",
+    "zh:a320a083deeca9c04838949469f7986fd843ebe9627ad08127307d6c756f70cf",
+    "zh:aa11648b95cc0c838bfa93d01d125e38070dfda2a421bb20d68ed6820e67d100",
+    "zh:e50cff1fe4a84bd29e4ca4f95ef8bf06ddf424a23c4ee0709ec28f3f9722d4a8",
+    "zh:f7a28616ac335aaa1f11df5d01e793caad0e63586559394dd367da79664cc119",
+    "zh:fd82a87a7b1b6a4681371e5777c8b4404e5c5af6515ce2f1242d149529c3c5cf",
+  ]
+}
