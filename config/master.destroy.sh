@@ -4,8 +4,6 @@ uninstall_packages() {
     echo Uninstalling Packages
 
     sudo apt update
-    sudo sed -i 's/DNS=178.22.122.100 185.51.200.2/#DNS=/' /etc/systemd/resolved.conf
-    sudo service systemd-resolved restart
 }
 
 uninstall_k3s() {
@@ -32,9 +30,11 @@ clear_cache() {
 }
 
 uninstall_packages
+${node_pre_destroy}
 if [ "${cluster_type}" = "k3s" ]; then
     uninstall_k3s
 elif [ "${cluster_type}" = "rke2" ]; then
     uninstall_rke2
 fi
+${node_post_destroy}
 clear_cache

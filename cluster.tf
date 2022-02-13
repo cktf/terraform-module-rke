@@ -12,6 +12,10 @@ resource "null_resource" "master" {
     cluster_master_token  = random_password.master_token.result
     cluster_worker_token  = random_password.worker_token.result
     cluster_registry      = var.registry
+    node_pre_create       = each.value.pre_create
+    node_post_create      = each.value.post_create
+    node_pre_destroy      = each.value.pre_destroy
+    node_post_destroy     = each.value.post_destroy
     node_name             = each.value.name
     node_labels           = jsonencode(each.value.labels)
     node_taints           = jsonencode(each.value.taints)
@@ -56,6 +60,10 @@ resource "null_resource" "master" {
       cluster_master_token  = self.triggers.cluster_master_token
       cluster_worker_token  = self.triggers.cluster_worker_token
       cluster_registry      = self.triggers.cluster_registry
+      node_pre_create       = self.triggers.node_pre_create
+      node_post_create      = self.triggers.node_post_create
+      node_pre_destroy      = self.triggers.node_pre_destroy
+      node_post_destroy     = self.triggers.node_post_destroy
       node_name             = self.triggers.node_name
       node_labels           = jsondecode(self.triggers.node_labels)
       node_taints           = jsondecode(self.triggers.node_taints)
@@ -65,7 +73,7 @@ resource "null_resource" "master" {
     when = create
     inline = [
       "chmod +x /tmp/script.sh",
-      "echo ${jsondecode(self.triggers.connection).password} | sudo -S /tmp/script.sh"
+      "echo ${jsondecode(self.triggers.connection).password} | sudo -S /tmp/script.sh",
     ]
   }
 
@@ -82,6 +90,10 @@ resource "null_resource" "master" {
       cluster_master_token  = self.triggers.cluster_master_token
       cluster_worker_token  = self.triggers.cluster_worker_token
       cluster_registry      = self.triggers.cluster_registry
+      node_pre_create       = self.triggers.node_pre_create
+      node_post_create      = self.triggers.node_post_create
+      node_pre_destroy      = self.triggers.node_pre_destroy
+      node_post_destroy     = self.triggers.node_post_destroy
       node_name             = self.triggers.node_name
       node_labels           = jsondecode(self.triggers.node_labels)
       node_taints           = jsondecode(self.triggers.node_taints)
@@ -91,7 +103,7 @@ resource "null_resource" "master" {
     when = destroy
     inline = [
       "chmod +x /tmp/script.sh",
-      "echo ${jsondecode(self.triggers.connection).password} | sudo -S /tmp/script.sh"
+      "echo ${jsondecode(self.triggers.connection).password} | sudo -S /tmp/script.sh",
     ]
   }
 }

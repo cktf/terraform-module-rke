@@ -4,10 +4,6 @@ install_packages() {
     echo Installing Packages
 
     sudo apt update
-    sudo rm /etc/resolv.conf
-    sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
-    sudo sed -i 's/#DNS=/DNS=178.22.122.100 185.51.200.2/' /etc/systemd/resolved.conf
-    sudo service systemd-resolved restart
 }
 
 install_k3s() {
@@ -80,9 +76,11 @@ clear_cache() {
 }
 
 install_packages
+${node_pre_create}
 if [ "${cluster_type}" = "k3s" ]; then
     install_k3s
 elif [ "${cluster_type}" = "rke2" ]; then
     install_rke2
 fi
+${node_post_create}
 clear_cache

@@ -47,10 +47,14 @@ variable "registry" {
 
 variable "masters" {
   type = map(object({
-    name       = string
-    labels     = list(string)
-    taints     = list(string)
-    connection = map(any)
+    pre_create   = string
+    post_create  = string
+    pre_destroy  = string
+    post_destroy = string
+    name         = string
+    labels       = list(string)
+    taints       = list(string)
+    connection   = map(any)
   }))
   default     = {}
   sensitive   = false
@@ -59,10 +63,14 @@ variable "masters" {
 
 variable "workers" {
   type = map(object({
-    name       = string
-    labels     = list(string)
-    taints     = list(string)
-    connection = map(any)
+    pre_create   = string
+    post_create  = string
+    pre_destroy  = string
+    post_destroy = string
+    name         = string
+    labels       = list(string)
+    taints       = list(string)
+    connection   = map(any)
   }))
   default     = {}
   sensitive   = false
@@ -71,10 +79,14 @@ variable "workers" {
 
 variable "windows_workers" {
   type = map(object({
-    name       = string
-    labels     = list(string)
-    taints     = list(string)
-    connection = map(any)
+    pre_create   = string
+    post_create  = string
+    pre_destroy  = string
+    post_destroy = string
+    name         = string
+    labels       = list(string)
+    taints       = list(string)
+    connection   = map(any)
   }))
   default     = {}
   sensitive   = false
