@@ -1,6 +1,6 @@
 # Terraform Module RKE
 
-**RKE** is a Terraform module defining the required resources for creating a `rke2`, `k3s` cluster using `remote shell connection`
+**RKE** is a Terraform module useful for bootstraping **HA** kubernetes clusters using **k3s** and **rke2** on **Remote Machines**
 
 ## Installation
 
@@ -16,25 +16,59 @@ terraform init
 module "rke" {
   source = "cktf/rke/module"
 
-  name       = "platform"
-  network_id = module.network.id
+  type     = "k3s"
+  registry = "https://mirror.gcr.io"
   masters = {
-    linux = {
-      count       = 1
-      subnet      = "192.168.1.0/24"
-      image_name  = "ubuntu"
-      flavor_name = "m1.small"
+    master1 = {
+      name   = "Master1"
+      labels = ["platform=linux"]
+      taints = []
+      connection = {
+        type     = "ssh"
+        host     = "192.168.100.10"
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
+    }
+    master2 = {
+      name   = "Master2"
+      labels = ["platform=linux"]
+      taints = []
+      connection = {
+        type     = "ssh"
+        host     = "192.168.100.11"
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
     }
   }
+
   workers = {
-    linux = {
-      count       = 2
-      subnet      = "192.168.2.0/24"
-      image_name  = "ubuntu"
-      flavor_name = "m1.small"
+    worker1 = {
+      name   = "Worker1"
+      labels = ["platform=linux"]
+      taints = []
+      connection = {
+        type     = "ssh"
+        host     = "192.168.100.20"
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
+    }
+    worker2 = {
+      name   = "Worker2"
+      labels = ["platform=linux"]
+      taints = []
+      connection = {
+        type     = "ssh"
+        host     = "192.168.100.21"
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
     }
   }
 }
+
 ```
 
 ## Contributing
@@ -45,4 +79,4 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT]()
+[MIT](mit)

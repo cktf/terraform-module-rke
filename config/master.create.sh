@@ -83,7 +83,7 @@ clear_cache() {
 }
 
 install_packages
-${node.pre_create}
+${try(node.pre_create, "")}
 install_rke
-${node.post_create}
+${try(node.post_create, "")}
 clear_cache

@@ -28,7 +28,7 @@ clear_cache() {
 }
 
 uninstall_packages
-${node.pre_destroy}
+${try(node.pre_destroy, "")}
 uninstall_rke
-${node.post_destroy}
+${try(node.post_destroy, "")}
 clear_cache
