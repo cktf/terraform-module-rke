@@ -4,62 +4,40 @@ install_packages() {
     echo Installing Packages
 
     sudo apt update
-    sudo rm /etc/resolv.conf
-    sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
-    sudo sed -i 's/#DNS=/DNS=178.22.122.100 185.51.200.2/' /etc/systemd/resolved.conf
-    sudo service systemd-resolved restart
 }
 
-install_k3s() {
-    echo Installing K3S
+install_rke() {
+    echo Installing RKE
 
-    export INSTALL_K3S_VERSION=${rke_version}
-    export INSTALL_K3S_CHANNEL=${rke_channel}
-    
-    sudo mkdir -p /etc/rancher/k3s
-    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/k3s/config.yaml > /dev/null
+    export INSTALL_${upper(type)}_VERSION=${version}
+    export INSTALL_${upper(type)}_CHANNEL=${channel}
+
+    sudo mkdir -p /etc/rancher/${type}
+    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/${type}/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
-        disable: "${rke_disable}"
-        server: "${rke_loadbalancer}"
-        agent-token: "${rke_worker_token}"
-        node-name: "${node_name}"
-        node-label:
-            - "platform=linux"
-        node-taint:
-            - "platform=linux"
+        disable: [${join(",", [for item in disables : "\"${item}\""])}]
+        server: "${load_balancer}"
+        agent-token: "${worker_token}"
+        node-name: "${node.name}"
+        node-label: [${join(",", [for item in node.labels : "\"${item}\""])}]
+        node-taint: [${join(",", [for item in node.taints : "\"${item}\""])}]
 	EOF
-    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/k3s/registries.yaml > /dev/null
+    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/${type}/registries.yaml > /dev/null
         mirrors:
             docker.io:
                 endpoint:
-                    - "https://registry.docker.ir"
+                    - "${registry}"
 	EOF
 
-    curl -sfL https://get.k3s.io | sudo sh -
-    sudo systemctl enable k3s.service
-    sudo systemctl start k3s.service
-}
-
-install_rke2() {
-    echo Installing RKE2
-
-    sudo mkdir -p /etc/rancher/rke2
-    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/rke2/config.yaml > /dev/null
-        write-kubeconfig-mode: "0644"
-        token: "token"
-        node-label:
-            - "platform=linux"
-	EOF
-    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/rke2/registries.yaml > /dev/null
-        mirrors:
-            docker.io:
-                endpoint:
-                    - "https://registry.docker.ir"
-	EOF
-    
-    curl -sfL https://get.rke2.io | sudo sh -
-    sudo systemctl enable rke2-server.service
-    sudo systemctl start rke2-server.service
+    if [ "${type}" = "k3s" ]; then
+        curl -sfL https://get.k3s.io | sudo sh -
+        sudo systemctl enable k3s-agent.service
+        sudo systemctl start k3s-agent.service
+    elif [ "${type}" = "rke2" ]; then
+        curl -sfL https://get.rke2.io | sudo sh -
+        sudo systemctl enable rke2-agent.service
+        sudo systemctl start rke2-agent.service
+    fi
 }
 
 clear_cache() {
@@ -70,5 +48,7 @@ clear_cache() {
 }
 
 install_packages
-install_k3s
+${node.pre_create}
+install_rke
+${node.post_create}
 clear_cache

@@ -17,8 +17,8 @@ terraform {
 }
 
 data "k8sbootstrap_auth" "this" {
-  depends_on = [null_resource.master]
+  depends_on = [null_resource.master, null_resource.worker]
 
   server = "https://${coalesce(var.load_balancer, values(var.masters)[0].connection.host)}:6443"
-  token  = "${random_password.token_id.result}.${random_password.token_secret.result}"
+  token  = "${random_string.token_id.result}.${random_string.token_secret.result}"
 }

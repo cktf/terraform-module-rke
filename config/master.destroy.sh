@@ -6,20 +6,18 @@ uninstall_packages() {
     sudo apt update
 }
 
-uninstall_k3s() {
-    echo Uninstalling K3S
+uninstall_rke() {
+    echo Uninstalling RKE
 
-    sudo systemctl stop k3s.service
-    sudo systemctl disable k3s.service
-    sudo /usr/local/bin/k3s-uninstall.sh
-}
-
-uninstall_rke2() {
-    echo Uninstalling RKE2
-
-    sudo systemctl stop rke2-server.service
-    sudo systemctl disable rke2-server.service
-    sudo /usr/local/bin/rke2-uninstall.sh
+    if [ "${type}" = "k3s" ]; then
+        sudo systemctl stop k3s.service
+        sudo systemctl disable k3s.service
+        sudo /usr/local/bin/k3s-uninstall.sh
+    elif [ "${type}" = "rke2" ]; then
+        sudo systemctl stop rke2-server.service
+        sudo systemctl disable rke2-server.service
+        sudo /usr/local/bin/rke2-uninstall.sh
+    fi
 }
 
 clear_cache() {
@@ -30,11 +28,7 @@ clear_cache() {
 }
 
 uninstall_packages
-${node_pre_destroy}
-if [ "${cluster_type}" = "k3s" ]; then
-    uninstall_k3s
-elif [ "${cluster_type}" = "rke2" ]; then
-    uninstall_rke2
-fi
-${node_post_destroy}
+${node.pre_destroy}
+uninstall_rke
+${node.post_destroy}
 clear_cache

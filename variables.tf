@@ -24,6 +24,13 @@ variable "channel" {
   description = "RKE Channel"
 }
 
+variable "registry" {
+  type        = string
+  default     = "https://registry.hub.docker.com"
+  sensitive   = false
+  description = "RKE Registry"
+}
+
 variable "disables" {
   type        = list(string)
   default     = []
@@ -36,13 +43,6 @@ variable "load_balancer" {
   default     = ""
   sensitive   = false
   description = "RKE Load Balancer"
-}
-
-variable "registry" {
-  type        = string
-  default     = "https://registry.hub.docker.com"
-  sensitive   = false
-  description = "RKE Registry"
 }
 
 variable "masters" {
