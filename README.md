@@ -20,9 +20,13 @@ module "rke" {
   registry = "https://mirror.gcr.io"
   masters = {
     master1 = {
-      name   = "Master1"
-      labels = ["platform=linux"]
-      taints = []
+      name         = "Master1"
+      pre_create   = ""
+      post_create  = ""
+      pre_destroy  = ""
+      post_destroy = ""
+      labels       = ["platform=linux"]
+      taints       = []
       connection = {
         type     = "ssh"
         host     = "192.168.100.10"
@@ -68,7 +72,6 @@ module "rke" {
     }
   }
 }
-
 ```
 
 ## Contributing
