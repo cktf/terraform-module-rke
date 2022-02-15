@@ -1,3 +1,15 @@
+output "host" {
+  value       = "https://${coalesce(var.load_balancer, values(var.masters)[0].connection.host)}:6443"
+  sensitive   = true
+  description = "RKE Host"
+}
+
+output "token" {
+  value       = "${random_string.token_id.result}.${random_string.token_secret.result}"
+  sensitive   = true
+  description = "RKE Token"
+}
+
 output "ca_crt" {
   value       = data.k8sbootstrap_auth.this.ca_crt
   sensitive   = true
@@ -7,5 +19,5 @@ output "ca_crt" {
 output "kubeconfig" {
   value       = data.k8sbootstrap_auth.this.kubeconfig
   sensitive   = true
-  description = "RKE KubeConfig"
+  description = "RKE Kubernetes Config"
 }
