@@ -1,6 +1,6 @@
 output "host" {
   value       = "https://${coalesce(var.load_balancer, values(var.masters)[0].connection.host)}:6443"
-  sensitive   = true
+  sensitive   = false
   description = "RKE Host"
 }
 
