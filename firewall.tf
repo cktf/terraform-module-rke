@@ -37,7 +37,6 @@ resource "null_resource" "master_firewall" {
   provisioner "remote-exec" {
     when = create
     inline = [
-      "sudo ufw allow ssh",
       "sudo ufw allow http",
       "sudo ufw allow https",
       "sudo ufw allow 2379",
@@ -55,7 +54,6 @@ resource "null_resource" "master_firewall" {
     when = destroy
     inline = [
       "sudo ufw disable",
-      "sudo ufw deny ssh",
       "sudo ufw deny http",
       "sudo ufw deny https",
       "sudo ufw deny 2379",
@@ -109,7 +107,6 @@ resource "null_resource" "worker_firewall" {
   provisioner "remote-exec" {
     when = create
     inline = [
-      "sudo ufw allow ssh",
       "sudo ufw allow http",
       "sudo ufw allow https",
       "sudo ufw allow 2379",
@@ -127,7 +124,6 @@ resource "null_resource" "worker_firewall" {
     when = destroy
     inline = [
       "sudo ufw disable",
-      "sudo ufw deny ssh",
       "sudo ufw deny http",
       "sudo ufw deny https",
       "sudo ufw deny 2379",
