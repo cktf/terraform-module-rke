@@ -12,16 +12,16 @@ install_rke() {
     export INSTALL_${upper(type)}_VERSION=${version}
     export INSTALL_${upper(type)}_CHANNEL=${channel}
 
+    export ${upper(type)}_TOKEN=${master_token}
+    export ${upper(type)}_AGENT_TOKEN=${worker_token}
+    export INSTALL_${upper(type)}_EXEC=${leader ? "server --cluster-init" : "server --server https://${load_balancer}:6443"}
+
     mkdir -p /etc/rancher/${type}
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
         kube-apiserver-arg: ["enable-bootstrap-token-auth"]
         disable: [${join(",", [for item in disables : "\"${item}\""])}]
         tls-san: ["${load_balancer}"]
-        cluster-init: "${leader}"
-        server: "${leader ? "" : load_balancer}"
-        token: "${master_token}"
-        agent-token: "${worker_token}"
         node-name: "${node.name}"
         node-label: [${join(",", [for item in node.labels : "\"${item}\""])}]
         node-taint: [${join(",", [for item in node.taints : "\"${item}\""])}]

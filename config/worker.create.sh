@@ -11,8 +11,9 @@ install_rke() {
 
     export INSTALL_${upper(type)}_VERSION=${version}
     export INSTALL_${upper(type)}_CHANNEL=${channel}
+
     export ${upper(type)}_TOKEN=${worker_token}
-    export ${upper(type)}_URL=${leader ? "" : load_balancer}
+    export ${upper(type)}_URL=https://${load_balancer}:6443
 
     mkdir -p /etc/rancher/${type}
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
