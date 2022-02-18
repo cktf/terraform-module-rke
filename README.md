@@ -35,9 +35,13 @@ module "rke" {
       }
     }
     master2 = {
-      name   = "Master2"
-      labels = ["platform=linux"]
-      taints = []
+      name         = "Master2"
+      pre_create   = ""
+      post_create  = ""
+      pre_destroy  = ""
+      post_destroy = ""
+      labels       = ["platform=linux"]
+      taints       = []
       connection = {
         type     = "ssh"
         host     = "192.168.100.11"

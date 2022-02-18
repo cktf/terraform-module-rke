@@ -12,11 +12,11 @@ uninstall_rke() {
     if [ "${type}" = "k3s" ]; then
         systemctl stop k3s-agent.service
         systemctl disable k3s-agent.service
-        /usr/local/bin/k3s-uninstall.sh
+        /usr/local/bin/k3s-agent-uninstall.sh
     elif [ "${type}" = "rke2" ]; then
         systemctl stop rke2-agent.service
         systemctl disable rke2-agent.service
-        /usr/local/bin/rke2-uninstall.sh
+        /usr/local/bin/rke2-agent-uninstall.sh
     fi
 }
 

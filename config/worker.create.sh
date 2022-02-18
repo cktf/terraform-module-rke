@@ -11,13 +11,13 @@ install_rke() {
 
     export INSTALL_${upper(type)}_VERSION=${version}
     export INSTALL_${upper(type)}_CHANNEL=${channel}
+    export ${upper(type)}_TOKEN=${worker_token}
+    export ${upper(type)}_URL=${leader ? "" : load_balancer}
 
     mkdir -p /etc/rancher/${type}
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
         disable: [${join(",", [for item in disables : "\"${item}\""])}]
-        server: "${load_balancer}"
-        agent-token: "${worker_token}"
         node-name: "${node.name}"
         node-label: [${join(",", [for item in node.labels : "\"${item}\""])}]
         node-taint: [${join(",", [for item in node.taints : "\"${item}\""])}]
