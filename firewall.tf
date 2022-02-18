@@ -36,34 +36,38 @@ resource "null_resource" "master_firewall" {
 
   provisioner "remote-exec" {
     when = create
-    inline = [
-      "sudo ufw allow http",
-      "sudo ufw allow https",
-      "sudo ufw allow 2379",
-      "sudo ufw allow 2380",
-      "sudo ufw allow 6443",
-      "sudo ufw allow 9345",
-      "sudo ufw allow 10250",
-      "sudo ufw allow 179",
-      "sudo ufw allow 4789",
-      "sudo ufw allow 5473",
-      "sudo ufw --force enable",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo ufw allow http
+        sudo ufw allow https
+        sudo ufw allow 2379
+        sudo ufw allow 2380
+        sudo ufw allow 6443
+        sudo ufw allow 9345
+        sudo ufw allow 10250
+        sudo ufw allow 179
+        sudo ufw allow 4789
+        sudo ufw allow 5473
+        sudo ufw --force enable
+    EOF
     ]
   }
   provisioner "remote-exec" {
     when = destroy
-    inline = [
-      "sudo ufw disable",
-      "sudo ufw deny http",
-      "sudo ufw deny https",
-      "sudo ufw deny 2379",
-      "sudo ufw deny 2380",
-      "sudo ufw deny 6443",
-      "sudo ufw deny 9345",
-      "sudo ufw deny 10250",
-      "sudo ufw deny 179",
-      "sudo ufw deny 4789",
-      "sudo ufw deny 5473",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo ufw disable
+        sudo ufw deny http
+        sudo ufw deny https
+        sudo ufw deny 2379
+        sudo ufw deny 2380
+        sudo ufw deny 6443
+        sudo ufw deny 9345
+        sudo ufw deny 10250
+        sudo ufw deny 179
+        sudo ufw deny 4789
+        sudo ufw deny 5473
+    EOF
     ]
   }
 }
@@ -106,34 +110,38 @@ resource "null_resource" "worker_firewall" {
 
   provisioner "remote-exec" {
     when = create
-    inline = [
-      "sudo ufw allow http",
-      "sudo ufw allow https",
-      "sudo ufw allow 2379",
-      "sudo ufw allow 2380",
-      "sudo ufw allow 6443",
-      "sudo ufw allow 9345",
-      "sudo ufw allow 10250",
-      "sudo ufw allow 179",
-      "sudo ufw allow 4789",
-      "sudo ufw allow 5473",
-      "sudo ufw --force enable",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo ufw allow http
+        sudo ufw allow https
+        sudo ufw allow 2379
+        sudo ufw allow 2380
+        sudo ufw allow 6443
+        sudo ufw allow 9345
+        sudo ufw allow 10250
+        sudo ufw allow 179
+        sudo ufw allow 4789
+        sudo ufw allow 5473
+        sudo ufw --force enable
+    EOF
     ]
   }
   provisioner "remote-exec" {
     when = destroy
-    inline = [
-      "sudo ufw disable",
-      "sudo ufw deny http",
-      "sudo ufw deny https",
-      "sudo ufw deny 2379",
-      "sudo ufw deny 2380",
-      "sudo ufw deny 6443",
-      "sudo ufw deny 9345",
-      "sudo ufw deny 10250",
-      "sudo ufw deny 179",
-      "sudo ufw deny 4789",
-      "sudo ufw deny 5473",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo ufw disable
+        sudo ufw deny http
+        sudo ufw deny https
+        sudo ufw deny 2379
+        sudo ufw deny 2380
+        sudo ufw deny 6443
+        sudo ufw deny 9345
+        sudo ufw deny 10250
+        sudo ufw deny 179
+        sudo ufw deny 4789
+        sudo ufw deny 5473
+    EOF
     ]
   }
 }

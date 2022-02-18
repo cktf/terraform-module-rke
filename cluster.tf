@@ -51,9 +51,11 @@ resource "null_resource" "master" {
   }
   provisioner "remote-exec" {
     when = create
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "echo ${jsondecode(self.triggers.this).node.connection.password} | sudo -S /tmp/script.sh",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo chmod +x /tmp/script.sh
+        sudo /tmp/script.sh
+    EOF
     ]
   }
 
@@ -64,9 +66,11 @@ resource "null_resource" "master" {
   }
   provisioner "remote-exec" {
     when = destroy
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "echo ${jsondecode(self.triggers.this).node.connection.password} | sudo -S /tmp/script.sh",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo chmod +x /tmp/script.sh
+        sudo /tmp/script.sh
+    EOF
     ]
   }
 }
@@ -120,9 +124,11 @@ resource "null_resource" "worker" {
   }
   provisioner "remote-exec" {
     when = create
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "echo ${jsondecode(self.triggers.this).node.connection.password} | sudo -S /tmp/script.sh",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo chmod +x /tmp/script.sh
+        sudo /tmp/script.sh
+    EOF
     ]
   }
 
@@ -133,9 +139,11 @@ resource "null_resource" "worker" {
   }
   provisioner "remote-exec" {
     when = destroy
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "echo ${jsondecode(self.triggers.this).node.connection.password} | sudo -S /tmp/script.sh",
+    inline = [<<-EOF
+        echo "${jsondecode(self.triggers.this).node.connection.password}" | sudo -S -v
+        sudo chmod +x /tmp/script.sh
+        sudo /tmp/script.sh
+    EOF
     ]
   }
 }

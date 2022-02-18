@@ -3,7 +3,7 @@
 install_packages() {
     echo Installing Packages
 
-    sudo apt update
+    apt update
 }
 
 install_rke() {
@@ -12,8 +12,8 @@ install_rke() {
     export INSTALL_${upper(type)}_VERSION=${version}
     export INSTALL_${upper(type)}_CHANNEL=${channel}
 
-    sudo mkdir -p /etc/rancher/${type}
-    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/${type}/config.yaml > /dev/null
+    mkdir -p /etc/rancher/${type}
+    cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
         disable: [${join(",", [for item in disables : "\"${item}\""])}]
         server: "${load_balancer}"
@@ -22,7 +22,7 @@ install_rke() {
         node-label: [${join(",", [for item in node.labels : "\"${item}\""])}]
         node-taint: [${join(",", [for item in node.taints : "\"${item}\""])}]
 	EOF
-    cat <<-EOF | sed -r 's/^ {8}//' | sudo tee /etc/rancher/${type}/registries.yaml > /dev/null
+    cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/registries.yaml > /dev/null
         mirrors:
             docker.io:
                 endpoint:
@@ -30,21 +30,21 @@ install_rke() {
 	EOF
 
     if [ "${type}" = "k3s" ]; then
-        curl -sfL https://get.k3s.io | sudo sh -
-        sudo systemctl enable k3s-agent.service
-        sudo systemctl start k3s-agent.service
+        curl -sfL https://get.k3s.io | sh -
+        systemctl enable k3s-agent.service
+        systemctl start k3s-agent.service
     elif [ "${type}" = "rke2" ]; then
-        curl -sfL https://get.rke2.io | sudo sh -
-        sudo systemctl enable rke2-agent.service
-        sudo systemctl start rke2-agent.service
+        curl -sfL https://get.rke2.io | sh -
+        systemctl enable rke2-agent.service
+        systemctl start rke2-agent.service
     fi
 }
 
 clear_cache() {
     echo Clearing Cache
     
-    sudo rm -Rf /var/lib/apt/lists/*
-    sudo rm -Rf /tmp/*
+    rm -Rf /var/lib/apt/lists/*
+    rm -Rf /tmp/*
 }
 
 install_packages
