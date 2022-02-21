@@ -9,12 +9,12 @@ install_packages() {
 install_rke() {
     echo Installing RKE
 
-    export INSTALL_${upper(type)}_VERSION=${version}
-    export INSTALL_${upper(type)}_CHANNEL=${channel}
+    export INSTALL_${upper(type)}_VERSION="${version}"
+    export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
-    export ${upper(type)}_TOKEN=${master_token}
-    export ${upper(type)}_AGENT_TOKEN=${worker_token}
-    export INSTALL_${upper(type)}_EXEC=${leader ? "server --cluster-init" : "server --server https://${load_balancer}:6443"}
+    export ${upper(type)}_TOKEN="${master_token}"
+    export ${upper(type)}_AGENT_TOKEN="${worker_token}"
+    export INSTALL_${upper(type)}_EXEC="${leader ? "server --cluster-init" : "server --server https://${load_balancer}:6443"}"
 
     mkdir -p /etc/rancher/${type}
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
