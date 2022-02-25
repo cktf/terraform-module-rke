@@ -1,5 +1,9 @@
 # Terraform Module RKE
 
+![checks](https://github.com/cktf/terraform-module-rke/actions/workflows/cicd.yml/badge.svg)
+![release](https://img.shields.io/github/v/release/cktf/terraform-module-rke?display_name=tag)
+![license](https://img.shields.io/github/license/cktf/terraform-module-rke)
+
 **RKE** is a Terraform module useful for bootstraping **HA** kubernetes clusters using **k3s** and **rke2** on **Remote Machines**
 
 ## Installation
@@ -86,4 +90,5 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](mit)
+This project is licensed under the [MIT](LICENSE.md).  
+Copyright (c) KoLiBer (koliberr136a1@gmail.com)
