@@ -45,7 +45,7 @@ variable "load_balancer" {
   description = "RKE Load Balancer"
 }
 
-variable "masters" {
+variable "master_nodes" {
   type = map(object({
     pre_create   = string
     post_create  = string
@@ -58,10 +58,10 @@ variable "masters" {
   }))
   default     = {}
   sensitive   = false
-  description = "RKE Masters"
+  description = "RKE Master Nodes"
 }
 
-variable "workers" {
+variable "worker_nodes" {
   type = map(object({
     pre_create   = string
     post_create  = string
@@ -74,10 +74,10 @@ variable "workers" {
   }))
   default     = {}
   sensitive   = false
-  description = "RKE Workers"
+  description = "RKE Worker Nodes"
 }
 
-variable "windows_workers" {
+variable "windows_worker_nodes" {
   type = map(object({
     pre_create   = string
     post_create  = string
@@ -90,5 +90,5 @@ variable "windows_workers" {
   }))
   default     = {}
   sensitive   = false
-  description = "RKE Windows Workers"
+  description = "RKE Windows Worker Nodes"
 }

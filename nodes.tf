@@ -1,6 +1,6 @@
-resource "null_resource" "master" {
-  for_each   = var.masters
-  depends_on = [null_resource.master_firewall]
+resource "null_resource" "master_nodes" {
+  for_each   = var.master_nodes
+  depends_on = [null_resource.master_firewalls]
 
   triggers = {
     this = jsonencode({
@@ -9,8 +9,8 @@ resource "null_resource" "master" {
       channel       = var.channel
       registry      = var.registry
       disables      = var.disables
-      leader        = keys(var.masters)[0] == each.key
-      load_balancer = coalesce(var.load_balancer, values(var.masters)[0].connection.host)
+      leader        = keys(var.master_nodes)[0] == each.key
+      load_balancer = coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)
       token_id      = random_string.token_id.result
       token_secret  = random_string.token_secret.result
       master_token  = random_string.master_token.result
@@ -75,9 +75,9 @@ resource "null_resource" "master" {
   }
 }
 
-resource "null_resource" "worker" {
-  for_each   = var.workers
-  depends_on = [null_resource.worker_firewall]
+resource "null_resource" "worker_nodes" {
+  for_each   = var.worker_nodes
+  depends_on = [null_resource.worker_firewalls]
 
   triggers = {
     this = jsonencode({
@@ -86,7 +86,7 @@ resource "null_resource" "worker" {
       channel       = var.channel
       registry      = var.registry
       disables      = var.disables
-      load_balancer = coalesce(var.load_balancer, values(var.masters)[0].connection.host)
+      load_balancer = coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)
       worker_token  = random_string.worker_token.result
       node          = each.value
     })

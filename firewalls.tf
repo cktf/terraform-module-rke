@@ -1,5 +1,5 @@
-resource "null_resource" "master_firewall" {
-  for_each = var.masters
+resource "null_resource" "master_firewalls" {
+  for_each = var.master_nodes
 
   triggers = {
     this = jsonencode({
@@ -72,8 +72,8 @@ resource "null_resource" "master_firewall" {
   }
 }
 
-resource "null_resource" "worker_firewall" {
-  for_each = var.workers
+resource "null_resource" "worker_firewalls" {
+  for_each = var.worker_nodes
 
   triggers = {
     this = jsonencode({
