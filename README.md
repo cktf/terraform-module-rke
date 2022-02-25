@@ -18,7 +18,7 @@ module "rke" {
 
   type     = "k3s"
   registry = "https://mirror.gcr.io"
-  masters = {
+  master_nodes = {
     master1 = {
       name         = "Master1"
       pre_create   = ""
@@ -51,7 +51,7 @@ module "rke" {
     }
   }
 
-  workers = {
+  worker_nodes = {
     worker1 = {
       name   = "Worker1"
       labels = ["platform=linux"]
