@@ -24,18 +24,22 @@ variable "channel" {
   description = "RKE Channel"
 }
 
-variable "registry" {
-  type        = string
-  default     = "https://registry.hub.docker.com"
-  sensitive   = false
-  description = "RKE Registry"
-}
-
 variable "disables" {
   type        = list(string)
   default     = []
   sensitive   = false
   description = "RKE Disables"
+}
+
+variable "registries" {
+  type = map(object({
+    endpoint = string
+    username = string
+    password = string
+  }))
+  default     = {}
+  sensitive   = true
+  description = "RKE Registries"
 }
 
 variable "load_balancer" {

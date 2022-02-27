@@ -7,8 +7,8 @@ resource "null_resource" "master_nodes" {
       type          = var.type
       version       = var.rke_version
       channel       = var.channel
-      registry      = var.registry
       disables      = var.disables
+      registries    = var.registries
       leader        = keys(var.master_nodes)[0] == each.key
       load_balancer = coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)
       token_id      = random_string.token_id.result
@@ -84,8 +84,8 @@ resource "null_resource" "worker_nodes" {
       type          = var.type
       version       = var.rke_version
       channel       = var.channel
-      registry      = var.registry
       disables      = var.disables
+      registries    = var.registries
       load_balancer = coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)
       worker_token  = random_string.worker_token.result
       node          = each.value

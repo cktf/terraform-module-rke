@@ -21,7 +21,6 @@ module "rke" {
   source = "cktf/rke/module"
 
   type     = "k3s"
-  registry = "https://mirror.gcr.io"
   master_nodes = {
     master1 = {
       name         = "Master1"
@@ -54,7 +53,6 @@ module "rke" {
       }
     }
   }
-
   worker_nodes = {
     worker1 = {
       name   = "Worker1"

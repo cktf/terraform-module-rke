@@ -28,9 +28,20 @@ install_rke() {
 	EOF
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/registries.yaml > /dev/null
         mirrors:
-            docker.io:
+        %{ for key, value in registries }
+            "${key}":
                 endpoint:
-                    - "${registry}"
+                    - "https://${value.endpoint}"
+        %{ endfor }
+        configs:
+        %{ for key, value in registries }
+        %{ if value.username != "" && value.password != "" }
+            "${value.endpoint}":
+                auth:
+                    username: ${value.username}
+                    password: ${value.password}
+        %{ endif }
+        %{ endfor }
 	EOF
 
     mkdir -p /var/lib/rancher/${type}/server/manifests
