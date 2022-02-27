@@ -9,6 +9,7 @@ install_packages() {
 install_rke() {
     echo Installing RKE
 
+    export INSTALL_${upper(type)}_SKIP_START="true"
     export INSTALL_${upper(type)}_VERSION="${version}"
     export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
