@@ -11,6 +11,9 @@ resource "null_resource" "master_nodes" {
       registries    = var.registries
       leader        = keys(var.master_nodes)[0] == each.key
       load_balancer = coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)
+      https_proxy   = var.https_proxy
+      http_proxy    = var.http_proxy
+      no_proxy      = var.no_proxy
       token_id      = random_string.token_id.result
       token_secret  = random_string.token_secret.result
       master_token  = random_string.master_token.result
@@ -87,6 +90,9 @@ resource "null_resource" "worker_nodes" {
       disables      = var.disables
       registries    = var.registries
       load_balancer = coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)
+      https_proxy   = var.https_proxy
+      http_proxy    = var.http_proxy
+      no_proxy      = var.no_proxy
       worker_token  = random_string.worker_token.result
       node          = each.value
     })

@@ -9,7 +9,9 @@ install_packages() {
 install_rke() {
     echo Installing RKE
 
+    export INSTALL_${upper(type)}_NAME="agent"
     export INSTALL_${upper(type)}_SKIP_START="true"
+    export INSTALL_${upper(type)}_SKIP_ENABLE="true"
     export INSTALL_${upper(type)}_VERSION="${version}"
     export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
@@ -33,7 +35,7 @@ install_rke() {
         %{ endfor }
         configs:
         %{ for key, value in registries }
-        %{ if value.username != "" && value.password != "" }
+        %{ if can(value.username) && can(value.password) }
             "${value.endpoint}":
                 auth:
                     username: ${value.username}
@@ -41,16 +43,17 @@ install_rke() {
         %{ endif }
         %{ endfor }
 	EOF
+    
+    curl -sfL https://get.${type}.io | sh -
 
-    if [ "${type}" = "k3s" ]; then
-        curl -sfL https://get.k3s.io | sh -
-        systemctl enable k3s-agent.service
-        systemctl start k3s-agent.service
-    elif [ "${type}" = "rke2" ]; then
-        curl -sfL https://get.rke2.io | sh -
-        systemctl enable rke2-agent.service
-        systemctl start rke2-agent.service
-    fi
+    cat <<-EOF | sed -r 's/^ {8}//' | tee -a /etc/systemd/system/${type}-agent.service.env > /dev/null
+        CONTAINERD_HTTPS_PROXY="${https_proxy}"
+        CONTAINERD_HTTP_PROXY="${http_proxy}"
+        CONTAINERD_NO_PROXY="${no_proxy}"
+	EOF
+
+    systemctl enable ${type}-agent.service
+    systemctl start ${type}-agent.service
 }
 
 clear_cache() {

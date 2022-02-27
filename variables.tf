@@ -34,8 +34,8 @@ variable "disables" {
 variable "registries" {
   type = map(object({
     endpoint = string
-    username = string
-    password = string
+    username = optional(string)
+    password = optional(string)
   }))
   default     = {}
   sensitive   = true
@@ -49,12 +49,33 @@ variable "load_balancer" {
   description = "RKE Load Balancer"
 }
 
+variable "https_proxy" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "RKE HTTPS Proxy"
+}
+
+variable "http_proxy" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "RKE HTTP Proxy"
+}
+
+variable "no_proxy" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "RKE No Proxy"
+}
+
 variable "master_nodes" {
   type = map(object({
-    pre_create   = string
-    post_create  = string
-    pre_destroy  = string
-    post_destroy = string
+    pre_create   = optional(string)
+    post_create  = optional(string)
+    pre_destroy  = optional(string)
+    post_destroy = optional(string)
     name         = string
     labels       = list(string)
     taints       = list(string)
@@ -67,10 +88,10 @@ variable "master_nodes" {
 
 variable "worker_nodes" {
   type = map(object({
-    pre_create   = string
-    post_create  = string
-    pre_destroy  = string
-    post_destroy = string
+    pre_create   = optional(string)
+    post_create  = optional(string)
+    pre_destroy  = optional(string)
+    post_destroy = optional(string)
     name         = string
     labels       = list(string)
     taints       = list(string)
@@ -83,10 +104,10 @@ variable "worker_nodes" {
 
 variable "windows_worker_nodes" {
   type = map(object({
-    pre_create   = string
-    post_create  = string
-    pre_destroy  = string
-    post_destroy = string
+    pre_create   = optional(string)
+    post_create  = optional(string)
+    pre_destroy  = optional(string)
+    post_destroy = optional(string)
     name         = string
     labels       = list(string)
     taints       = list(string)
