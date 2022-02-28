@@ -20,9 +20,9 @@ terraform init
 module "rke" {
   source = "cktf/rke/module"
 
-  type     = "k3s"
+  type = "k3s"
   master_nodes = {
-    master1 = {
+    0 = {
       name         = "Master1"
       pre_create   = ""
       post_create  = ""
@@ -37,8 +37,10 @@ module "rke" {
         password = "ubuntu"
       }
     }
-    master2 = {
-      name         = "Master2"
+  }
+  worker_nodes = {
+    0 = {
+      name         = "Worker1"
       pre_create   = ""
       post_create  = ""
       pre_destroy  = ""
@@ -47,28 +49,19 @@ module "rke" {
       taints       = []
       connection = {
         type     = "ssh"
-        host     = "192.168.100.11"
-        user     = "ubuntu"
-        password = "ubuntu"
-      }
-    }
-  }
-  worker_nodes = {
-    worker1 = {
-      name   = "Worker1"
-      labels = ["platform=linux"]
-      taints = []
-      connection = {
-        type     = "ssh"
         host     = "192.168.100.20"
         user     = "ubuntu"
         password = "ubuntu"
       }
     }
-    worker2 = {
-      name   = "Worker2"
-      labels = ["platform=linux"]
-      taints = []
+    1 = {
+      name         = "Worker2"
+      pre_create   = ""
+      post_create  = ""
+      pre_destroy  = ""
+      post_destroy = ""
+      labels       = ["platform=linux"]
+      taints       = []
       connection = {
         type     = "ssh"
         host     = "192.168.100.21"
