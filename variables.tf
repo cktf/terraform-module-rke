@@ -38,7 +38,7 @@ variable "registries" {
     password = optional(string)
   }))
   default     = {}
-  sensitive   = true
+  sensitive   = false
   description = "RKE Registries"
 }
 
