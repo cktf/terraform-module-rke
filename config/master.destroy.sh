@@ -11,7 +11,7 @@ uninstall_rke() {
 
     systemctl stop ${type}-server.service
     systemctl disable ${type}-server.service
-    /usr/local/bin/${type}-uninstall.sh
+    /usr/local/bin/${type}-server-uninstall.sh
 }
 
 clear_cache() {
