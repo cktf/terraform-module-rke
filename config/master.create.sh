@@ -34,12 +34,12 @@ install_rke() {
         %{ for key, value in registries }
             "${key}":
                 endpoint:
-                    - "https://${value.endpoint}"
+                    - "${value.endpoint}"
         %{ endfor }
         configs:
         %{ for key, value in registries }
         %{ if can(value.username) && can(value.password) }
-            "${value.endpoint}":
+            "${replace(value.endpoint, "/https?:\\/\\//", "")}":
                 auth:
                     username: ${value.username}
                     password: ${value.password}
