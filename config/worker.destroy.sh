@@ -9,15 +9,9 @@ uninstall_packages() {
 uninstall_rke() {
     echo Uninstalling RKE
 
-    if [ "${type}" = "k3s" ]; then
-        systemctl stop k3s-agent.service
-        systemctl disable k3s-agent.service
-        /usr/local/bin/k3s-agent-uninstall.sh
-    elif [ "${type}" = "rke2" ]; then
-        systemctl stop rke2-agent.service
-        systemctl disable rke2-agent.service
-        /usr/local/bin/rke2-agent-uninstall.sh
-    fi
+    systemctl stop ${type}-agent.service
+    systemctl disable ${type}-agent.service
+    /usr/local/bin/${type}-agent-uninstall.sh
 }
 
 clear_cache() {
