@@ -35,7 +35,7 @@ install_rke() {
         %{ endfor }
         configs:
         %{ for key, value in registries }
-        %{ if can(value.username) && can(value.password) }
+        %{ if value.username != "" && value.password != "" }
             "${replace(value.endpoint, "/https?:\\/\\//", "")}":
                 auth:
                     username: ${value.username}
@@ -64,7 +64,7 @@ clear_cache() {
 }
 
 install_packages
-${try(node.pre_create, "")}
+${node.pre_create}
 install_rke
-${try(node.post_create, "")}
+${node.post_create}
 clear_cache
