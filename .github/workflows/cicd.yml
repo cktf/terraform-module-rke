@@ -16,7 +16,9 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 50
             - uses: actions/setup-node@v2
               with:
                   node-version: "17"
@@ -34,48 +36,49 @@ jobs:
 
             - run: cp .github/.versionrc.js .
             - run: npx standard-version
-            - run: terraform init
-            - run: terraform fmt -check
-            - run: terraform validate -no-color
-            - run: mkdir -p build
-            - run: cp -R .terraform.lock.hcl *.tf build
-            - run: cp .env VERSION CHANNEL CHANGELOG build
+            - run: cat VERSION
+            # - run: terraform init
+            # - run: terraform fmt -check
+            # - run: terraform validate -no-color
+            # - run: mkdir -p build
+            # - run: cp -R .terraform.lock.hcl *.tf build
+            # - run: cp .env VERSION CHANNEL CHANGELOG build
 
-    test:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
+    # test:
+    #     needs: build
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - run: echo CodeCoverage
+    #         - run: echo CodeCoverage
 
-    release:
-        needs: test
-        runs-on: ubuntu-latest
-        if: github.event_name == 'push'
-        steps:
-            - uses: actions/checkout@v2
+    # release:
+    #     needs: test
+    #     runs-on: ubuntu-latest
+    #     if: github.event_name == 'push'
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - run: echo RegistryPush
+    #         - run: echo RegistryPush
 
-    deploy:
-        needs: release
-        runs-on: ubuntu-latest
-        if: github.event_name == 'push'
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/cache@v2
-              with:
-                  path: build/
-                  key: ${{ github.sha }}
+    # deploy:
+    #     needs: release
+    #     runs-on: ubuntu-latest
+    #     if: github.event_name == 'push'
+    #     steps:
+    #         - uses: actions/checkout@v3
+    #         - uses: actions/cache@v2
+    #           with:
+    #               path: build/
+    #               key: ${{ github.sha }}
 
-            - run: echo "VERSION=$(cat build/VERSION)" >> $GITHUB_ENV
-            - run: echo "CHANNEL=$(cat build/CHANNEL)" >> $GITHUB_ENV
-            - run: git tag ${{ env.VERSION }}
-            - run: git push --tag
-            - uses: softprops/action-gh-release@v1
-              with:
-                  tag_name: ${{ env.VERSION }}
-                  prerelease: ${{ env.CHANNEL != 'latest' }}
-                  body_path: build/CHANGELOG
-                  files: build/**
+    #         - run: echo "VERSION=$(cat build/VERSION)" >> $GITHUB_ENV
+    #         - run: echo "CHANNEL=$(cat build/CHANNEL)" >> $GITHUB_ENV
+    #         - run: git tag ${{ env.VERSION }}
+    #         - run: git push --tag
+    #         - uses: softprops/action-gh-release@v1
+    #           with:
+    #               tag_name: ${{ env.VERSION }}
+    #               prerelease: ${{ env.CHANNEL != 'latest' }}
+    #               body_path: build/CHANGELOG
+    #               files: build/**
