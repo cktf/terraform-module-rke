@@ -71,7 +71,6 @@ jobs:
 
             - run: echo "VERSION=$(cat build/VERSION)" >> $GITHUB_ENV
             - run: echo "CHANNEL=$(cat build/CHANNEL)" >> $GITHUB_ENV
-            - run: echo "CHANGELOG=$(cat build/CHANGELOG)" >> $GITHUB_ENV
             - run: git tag ${{ env.VERSION }}
             - run: git push --tag
             - uses: softprops/action-gh-release@v1
