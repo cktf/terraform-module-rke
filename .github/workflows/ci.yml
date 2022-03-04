@@ -1,4 +1,4 @@
-name: CI/CD
+name: Continuous Integration
 
 on:
     push:
@@ -36,6 +36,7 @@ jobs:
 
             - run: cp .github/.versionrc.js .
             - run: npx standard-version
+
             - run: terraform init
             - run: terraform fmt -check
             - run: terraform validate -no-color

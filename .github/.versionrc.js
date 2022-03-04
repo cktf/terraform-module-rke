@@ -1,28 +1,28 @@
 const branchChannels = {
-    "([0-9])?(.{+([0-9]),x}).x": undefined,
-    main: undefined,
+    "([0-9])?(.{+([0-9]),x}).x": null,
+    master: null,
     next: "next",
 };
 
-const currentBranch = require("child_process")
+const branch = require("child_process")
     .execSync("git branch --show-current")
     .toString();
-const currentChannel =
-    branchChannels[
-        Object.keys(branchChannels).find((value) =>
-            new RegExp(value).test(currentBranch)
-        )
-    ];
+const branchKey = Object.keys(branchChannels).find((value) =>
+    new RegExp(value).test(branch)
+);
+const channel = branchKey
+    ? branchChannels[branchKey]
+    : branch.replace("/", "-");
 
-require("fs").writeFileSync("VERSION", "");
-require("fs").writeFileSync("CHANNEL", currentChannel || "latest");
 require("fs").copyFileSync(".env.example", ".env");
+require("fs").writeFileSync("VERSION", "");
+require("fs").writeFileSync("CHANNEL", channel || "latest");
 
 module.exports = {
     tagPrefix: "",
     packageFiles: [],
     infile: "CHANGELOG",
-    prerelease: currentChannel,
+    prerelease: channel,
     bumpFiles: [
         {
             filename: "VERSION",
