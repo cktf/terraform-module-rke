@@ -20,6 +20,7 @@ install_rke() {
     export INSTALL_${upper(type)}_EXEC="${leader ? "server --cluster-init" : "server --server https://${load_balancer}:6443"}"
 
     mkdir -p /etc/rancher/${type}
+    mkdir -p /var/lib/rancher/${type}/server/manifests
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
         kube-apiserver-arg: ["enable-bootstrap-token-auth"]
@@ -34,21 +35,18 @@ install_rke() {
         %{ for key, value in registries }
             "${key}":
                 endpoint:
-                    - "https://${value.endpoint}"
+                    - "${value.endpoint}"
         %{ endfor }
         configs:
         %{ for key, value in registries }
-        %{ if can(value.username) && can(value.password) }
-            "${value.endpoint}":
+        %{ if value.username != "" && value.password != "" }
+            "${replace(value.endpoint, "/https?:\\/\\//", "")}":
                 auth:
                     username: ${value.username}
                     password: ${value.password}
         %{ endif }
         %{ endfor }
 	EOF
-
-    curl -sfL https://get.${type}.io | sh -
-    
     cat <<-EOF | sed -r 's/^ {8}//' | tee /var/lib/rancher/${type}/server/manifests/bootstrap.yaml > /dev/null
         ---
         apiVersion: v1
@@ -78,6 +76,9 @@ install_rke() {
             kind: ClusterRole
             name: cluster-admin    
 	EOF
+    
+    curl -sfL https://get.${type}.io | sh -
+    
     cat <<-EOF | sed -r 's/^ {8}//' | tee -a /etc/systemd/system/${type}-server.service.env > /dev/null
         CONTAINERD_HTTPS_PROXY="${https_proxy}"
         CONTAINERD_HTTP_PROXY="${http_proxy}"
@@ -96,7 +97,7 @@ clear_cache() {
 }
 
 install_packages
-${try(node.pre_create, "")}
+${node.pre_create}
 install_rke
-${try(node.post_create, "")}
+${node.post_create}
 clear_cache

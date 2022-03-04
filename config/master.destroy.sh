@@ -9,15 +9,9 @@ uninstall_packages() {
 uninstall_rke() {
     echo Uninstalling RKE
 
-    if [ "${type}" = "k3s" ]; then
-        systemctl stop k3s.service
-        systemctl disable k3s.service
-        /usr/local/bin/k3s-uninstall.sh
-    elif [ "${type}" = "rke2" ]; then
-        systemctl stop rke2-server.service
-        systemctl disable rke2-server.service
-        /usr/local/bin/rke2-uninstall.sh
-    fi
+    systemctl stop ${type}-server.service
+    systemctl disable ${type}-server.service
+    /usr/local/bin/${type}-server-uninstall.sh
 }
 
 clear_cache() {
@@ -28,7 +22,7 @@ clear_cache() {
 }
 
 uninstall_packages
-${try(node.pre_destroy, "")}
+${node.pre_destroy}
 uninstall_rke
-${try(node.post_destroy, "")}
+${node.post_destroy}
 clear_cache

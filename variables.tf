@@ -34,11 +34,11 @@ variable "disables" {
 variable "registries" {
   type = map(object({
     endpoint = string
-    username = optional(string)
-    password = optional(string)
+    username = string
+    password = string
   }))
   default     = {}
-  sensitive   = true
+  sensitive   = false
   description = "RKE Registries"
 }
 
@@ -72,10 +72,10 @@ variable "no_proxy" {
 
 variable "master_nodes" {
   type = map(object({
-    pre_create   = optional(string)
-    post_create  = optional(string)
-    pre_destroy  = optional(string)
-    post_destroy = optional(string)
+    pre_create   = string
+    post_create  = string
+    pre_destroy  = string
+    post_destroy = string
     name         = string
     labels       = list(string)
     taints       = list(string)
@@ -88,10 +88,10 @@ variable "master_nodes" {
 
 variable "worker_nodes" {
   type = map(object({
-    pre_create   = optional(string)
-    post_create  = optional(string)
-    pre_destroy  = optional(string)
-    post_destroy = optional(string)
+    pre_create   = string
+    post_create  = string
+    pre_destroy  = string
+    post_destroy = string
     name         = string
     labels       = list(string)
     taints       = list(string)
@@ -104,10 +104,10 @@ variable "worker_nodes" {
 
 variable "windows_worker_nodes" {
   type = map(object({
-    pre_create   = optional(string)
-    post_create  = optional(string)
-    pre_destroy  = optional(string)
-    post_destroy = optional(string)
+    pre_create   = string
+    post_create  = string
+    pre_destroy  = string
+    post_destroy = string
     name         = string
     labels       = list(string)
     taints       = list(string)
