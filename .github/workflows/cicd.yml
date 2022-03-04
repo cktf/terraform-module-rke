@@ -69,14 +69,14 @@ jobs:
                   path: build/
                   key: ${{ github.sha }}
 
-            - run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
-            - run: echo "CHANNEL=$(cat CHANNEL)" >> $GITHUB_ENV
-            - run: echo "CHANGELOG=$(cat CHANGELOG)" >> $GITHUB_ENV
+            - run: echo "VERSION=$(cat build/VERSION)" >> $GITHUB_ENV
+            - run: echo "CHANNEL=$(cat build/CHANNEL)" >> $GITHUB_ENV
+            - run: echo "CHANGELOG=$(cat build/CHANGELOG)" >> $GITHUB_ENV
             - run: git tag ${{ env.VERSION }}
             - run: git push --tag
             - uses: softprops/action-gh-release@v1
               with:
                   tag_name: ${{ env.VERSION }}
                   prerelease: ${{ env.CHANNEL != 'latest' }}
-                  body_path: CHANGELOG
+                  body_path: build/CHANGELOG
                   files: build/**
