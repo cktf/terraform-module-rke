@@ -38,7 +38,7 @@ jobs:
             - run: terraform fmt -check
             - run: terraform validate -no-color
             - run: mkdir -p build
-            - run: cp -R *.tf *.hcl build
+            - run: cp -R .terraform.lock.hcl *.tf build
             - run: cp .env VERSION CHANNEL CHANGELOG build
 
     test:
