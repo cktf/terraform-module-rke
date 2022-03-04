@@ -13,85 +13,70 @@ on:
             - next
 
 jobs:
-    version:
+    build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/cache@v2
-              with:
-                  path: ".env\nVERSION\nCHANNEL\nCHANGELOG"
-                  key: version_${{ github.sha }}
             - uses: actions/setup-node@v2
               with:
-                  node-version: "14"
-
-            - run: npm i -g semantic-release @semantic-release/exec
-            - run: cp .github/.releaserc.yml .
-            - run: npx semantic-release
-            - run: cp .env.example .env
-
-    build:
-        needs: version
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
+                  node-version: "17"
+            - uses: hashicorp/setup-terraform@v1
+              with:
+                  terraform_version: "1.1.4"
             - uses: actions/cache@v2
               with:
                   path: .terraform/
                   key: ${{ hashFiles('.terraform.lock.hcl') }}
             - uses: actions/cache@v2
               with:
-                  path: ".env\nVERSION\nCHANNEL\nCHANGELOG"
-                  key: version_${{ github.sha }}
-            - uses: actions/cache@v2
-              with:
-                  path: dist/
+                  path: build/
                   key: ${{ github.sha }}
-            - uses: hashicorp/setup-terraform@v1
-              with:
-                  terraform_version: "1.1.4"
 
+            - run: cp .github/.versionrc.js .
+            - run: npx standard-version
             - run: terraform init
             - run: terraform fmt -check
             - run: terraform validate -no-color
+            - run: mkdir -p build
+            - run: cp -R *.tf *.hcl build
+            - run: cp .env VERSION CHANNEL CHANGELOG build
 
     test:
         needs: build
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/cache@v2
-              with:
-                  path: .terraform/
-                  key: ${{ hashFiles('.terraform.lock.hcl') }}
-            - uses: hashicorp/setup-terraform@v1
-              with:
-                  terraform_version: "1.1.4"
 
             - run: echo CodeCoverage
 
-    release_git:
+    release:
         needs: test
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push'
+        steps:
+            - uses: actions/checkout@v2
+
+            - run: echo RegistryPush
+
+    deploy:
+        needs: release
         runs-on: ubuntu-latest
         if: github.event_name == 'push'
         steps:
             - uses: actions/checkout@v2
             - uses: actions/cache@v2
               with:
-                  path: ".env\nVERSION\nCHANNEL\nCHANGELOG"
-                  key: version_${{ github.sha }}
-            - uses: actions/cache@v2
-              with:
-                  path: dist/
+                  path: build/
                   key: ${{ github.sha }}
 
             - run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
             - run: echo "CHANNEL=$(cat CHANNEL)" >> $GITHUB_ENV
-            - run: git tag $(cat VERSION)
+            - run: echo "CHANGELOG=$(cat CHANGELOG)" >> $GITHUB_ENV
+            - run: git tag ${{ env.VERSION }}
             - run: git push --tag
             - uses: softprops/action-gh-release@v1
               with:
                   tag_name: ${{ env.VERSION }}
                   prerelease: ${{ env.CHANNEL != 'latest' }}
                   body_path: CHANGELOG
-                  files: dist/**
+                  files: build/**
