@@ -1,6 +1,6 @@
 const branchChannels = {
-    main: undefined,
     "([0-9])?(.{+([0-9]),x}).x": undefined,
+    main: undefined,
     next: "next",
 };
 
