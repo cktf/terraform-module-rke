@@ -1,13 +1,13 @@
 const branchChannels = {
     "([0-9])?(.{+([0-9]),x}).x": null,
-    master: null,
+    main: null,
     next: "next",
 };
 
 const branch = require("child_process")
     .execSync("git branch --show-current")
     .toString()
-    .replace(/(^[ \t]*\n)/gm, "");
+    .replace(/\s/g, "");
 const branchKey = Object.keys(branchChannels).find((value) =>
     new RegExp(value).test(branch)
 );
