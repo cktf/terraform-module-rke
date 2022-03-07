@@ -46,7 +46,10 @@ jobs:
 
             - run: echo "VERSION=$(cat build/VERSION)" >> $GITHUB_ENV
             - run: echo "CHANNEL=$(cat build/CHANNEL)" >> $GITHUB_ENV
-            - run: echo "CHANGELOG=$(cat build/CHANGELOG)" >> $GITHUB_ENV
+            - run: echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+            - run: cat build/CHANGELOG >> $GITHUB_ENV
+            - run: echo "EOF" >> $GITHUB_ENV
+
             - run: echo ${{ env.VERSION }}
             - run: echo ${{ env.CHANNEL }}
             - run: echo ${{ env.CHANGELOG }}
