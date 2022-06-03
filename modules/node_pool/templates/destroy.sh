@@ -9,9 +9,9 @@ uninstall_packages() {
 uninstall_rke() {
     echo Uninstalling RKE
 
-    systemctl stop ${type}-server.service
-    systemctl disable ${type}-server.service
-    /usr/local/bin/${type}-server-uninstall.sh
+    systemctl stop ${type}-agent.service
+    systemctl disable ${type}-agent.service
+    /usr/local/bin/${type}-agent-uninstall.sh
 }
 
 clear_cache() {
@@ -22,7 +22,7 @@ clear_cache() {
 }
 
 uninstall_packages
-${node.pre_destroy}
+${pre_destroy_user_data}
 uninstall_rke
-${node.post_destroy}
+${post_destroy_user_data}
 clear_cache

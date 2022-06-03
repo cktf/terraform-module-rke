@@ -15,35 +15,34 @@ install_rke() {
     export INSTALL_${upper(type)}_VERSION="${version}"
     export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
-    export ${upper(type)}_TOKEN="${master_token}"
-    export ${upper(type)}_AGENT_TOKEN="${worker_token}"
-    export INSTALL_${upper(type)}_EXEC="${leader ? "server --cluster-init" : "server --server https://${load_balancer}:6443"}"
+    export ${upper(type)}_TOKEN="${cluster_token}"
+    export ${upper(type)}_AGENT_TOKEN="${agent_token}"
+    export INSTALL_${upper(type)}_EXEC="${can(regex("-0$", name)) ? "server --cluster-init ${join(" ", extra_args)}" : "server --server https://${cluster_ip}:6443"} ${join(" ", extra_args)}"
 
     mkdir -p /etc/rancher/${type}
     mkdir -p /var/lib/rancher/${type}/server/manifests
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
         write-kubeconfig-mode: "0644"
         kube-apiserver-arg: ["enable-bootstrap-token-auth"]
-        disable: [${join(",", [for item in disables : "\"${item}\""])}]
-        tls-san: ["${load_balancer}"]
-        node-name: "${node.name}"
-        node-label: [${join(",", [for item in node.labels : "\"${item}\""])}]
-        node-taint: [${join(",", [for item in node.taints : "\"${item}\""])}]
+        tls-san: ["${cluster_ip}"]
+        node-name: "${name}"
+        node-label: [${join(",", [for key, val in labels : "\"${key}=${val}\""])}]
+        node-taint: [${join(",", [for key, val in taints : "\"${key}=${val}\""])}]
 	EOF
     cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/registries.yaml > /dev/null
         mirrors:
-        %{ for key, value in registries }
+        %{ for key, val in registries }
             "${key}":
                 endpoint:
-                    - "${value.endpoint}"
+                    - "${val.endpoint}"
         %{ endfor }
         configs:
-        %{ for key, value in registries }
-        %{ if value.username != "" && value.password != "" }
-            "${replace(value.endpoint, "/https?:\\/\\//", "")}":
+        %{ for key, val in registries }
+        %{ if val.username != "" && val.password != "" }
+            "${replace(val.endpoint, "/https?:\\/\\//", "")}":
                 auth:
-                    username: ${value.username}
-                    password: ${value.password}
+                    username: ${val.username}
+                    password: ${val.password}
         %{ endif }
         %{ endfor }
 	EOF
@@ -80,9 +79,9 @@ install_rke() {
     curl -sfL https://get.${type}.io | sh -
     
     cat <<-EOF | sed -r 's/^ {8}//' | tee -a /etc/systemd/system/${type}-server.service.env > /dev/null
-        CONTAINERD_HTTPS_PROXY="${https_proxy}"
-        CONTAINERD_HTTP_PROXY="${http_proxy}"
-        CONTAINERD_NO_PROXY="${no_proxy}"
+        %{ for key, val in extra_envs }
+        ${key}="${val}"
+        %{ endfor }
 	EOF
 
     systemctl enable ${type}-server.service
@@ -97,7 +96,7 @@ clear_cache() {
 }
 
 install_packages
-${node.pre_create}
+${pre_create_user_data}
 install_rke
-${node.post_create}
+${post_create_user_data}
 clear_cache

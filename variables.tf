@@ -1,8 +1,8 @@
-variable "type" {
+variable "cluster_type" {
   type        = string
   default     = "k3s"
   sensitive   = false
-  description = "RKE Type"
+  description = "Cluster Type"
 
   validation {
     condition     = contains(["k3s", "rke2"], var.type)
@@ -10,28 +10,28 @@ variable "type" {
   }
 }
 
-variable "rke_version" {
+variable "cluster_name" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "RKE Version"
+  description = "Cluster Name"
 }
 
-variable "channel" {
+variable "cluster_version" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "RKE Channel"
+  description = "Cluster Version"
 }
 
-variable "disables" {
-  type        = list(string)
-  default     = []
+variable "cluster_channel" {
+  type        = string
+  default     = ""
   sensitive   = false
-  description = "RKE Disables"
+  description = "Cluster Channel"
 }
 
-variable "registries" {
+variable "cluster_registries" {
   type = map(object({
     endpoint = string
     username = string
@@ -49,28 +49,7 @@ variable "load_balancer" {
   description = "RKE Load Balancer"
 }
 
-variable "https_proxy" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "RKE HTTPS Proxy"
-}
-
-variable "http_proxy" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "RKE HTTP Proxy"
-}
-
-variable "no_proxy" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "RKE No Proxy"
-}
-
-variable "master_nodes" {
+variable "cluster" {
   type = map(object({
     pre_create   = string
     post_create  = string
@@ -79,14 +58,14 @@ variable "master_nodes" {
     name         = string
     labels       = list(string)
     taints       = list(string)
-    connection   = map(any)
+    connections  = map(any)
   }))
   default     = {}
   sensitive   = false
   description = "RKE Master Nodes"
 }
 
-variable "worker_nodes" {
+variable "node_pools" {
   type = map(object({
     pre_create   = string
     post_create  = string
@@ -100,20 +79,4 @@ variable "worker_nodes" {
   default     = {}
   sensitive   = false
   description = "RKE Worker Nodes"
-}
-
-variable "windows_worker_nodes" {
-  type = map(object({
-    pre_create   = string
-    post_create  = string
-    pre_destroy  = string
-    post_destroy = string
-    name         = string
-    labels       = list(string)
-    taints       = list(string)
-    connection   = map(any)
-  }))
-  default     = {}
-  sensitive   = false
-  description = "RKE Windows Worker Nodes"
 }

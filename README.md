@@ -1,6 +1,6 @@
 # Terraform Module RKE
 
-![checks](https://github.com/cktf/terraform-module-rke/actions/workflows/ci.yml/badge.svg)
+![pipeline](https://github.com/cktf/terraform-module-rke/actions/workflows/cicd.yml/badge.svg)
 ![release](https://img.shields.io/github/v/release/cktf/terraform-module-rke?display_name=tag)
 ![license](https://img.shields.io/github/license/cktf/terraform-module-rke)
 
