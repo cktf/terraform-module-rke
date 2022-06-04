@@ -1,11 +1,6 @@
 terraform {
   required_version = ">= 0.14.0"
-  required_providers {
-    random = {
-      source  = "hashicorp/random"
-      version = "3.1.0"
-    }
-  }
+  required_providers {}
 }
 
 module "cluster" {
@@ -42,7 +37,7 @@ module "node_pool" {
   registries             = try(each.value.registries, var.registries)
   connections            = try(each.value.connections, {})
   cluster_url            = module.cluster.host
-  cluster_token          = module.cluster.token
+  cluster_token          = module.cluster.agent_token
   extra_args             = try(each.value.extra_args, var.extra_args)
   extra_envs             = try(each.value.extra_envs, var.extra_envs)
   pre_create_user_data   = try(each.value.pre_create_user_data, var.pre_create_user_data)

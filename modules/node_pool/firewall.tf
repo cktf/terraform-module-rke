@@ -48,6 +48,7 @@ resource "null_resource" "firewall" {
       "sudo ufw --force enable",
     ]
   }
+
   provisioner "remote-exec" {
     when = destroy
     inline = [

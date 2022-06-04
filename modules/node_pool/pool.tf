@@ -1,4 +1,4 @@
-resource "null_resource" "group" {
+resource "null_resource" "pool" {
   for_each   = { for idx, val in var.connections : idx => val }
   depends_on = [null_resource.firewall]
 
@@ -60,7 +60,7 @@ resource "null_resource" "group" {
     inline = [
       "echo '${jsondecode(self.triggers.connection).password}' | sudo -S -v",
       "sudo chmod +x /tmp/script.sh",
-      "sudo /tmp/script.sh"
+      "sudo /tmp/script.sh",
     ]
   }
 
@@ -74,7 +74,7 @@ resource "null_resource" "group" {
     inline = [
       "echo '${jsondecode(self.triggers.connection).password}' | sudo -S -v",
       "sudo chmod +x /tmp/script.sh",
-      "sudo /tmp/script.sh"
+      "sudo /tmp/script.sh",
     ]
   }
 }
