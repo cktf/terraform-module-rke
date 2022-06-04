@@ -34,12 +34,13 @@ module "node_pool" {
   labels                 = try(each.value.labels, {})
   registries             = try(each.value.registries, var.registries)
   connections            = try(each.value.connections, {})
-  join_host              = module.cluster.join_host
-  join_token             = module.cluster.join_token
   extra_args             = try(each.value.extra_args, var.extra_args)
   extra_envs             = try(each.value.extra_envs, var.extra_envs)
   pre_create_user_data   = try(each.value.pre_create_user_data, var.pre_create_user_data)
   post_create_user_data  = try(each.value.post_create_user_data, var.post_create_user_data)
   pre_destroy_user_data  = try(each.value.pre_destroy_user_data, var.pre_destroy_user_data)
   post_destroy_user_data = try(each.value.post_destroy_user_data, var.post_destroy_user_data)
+
+  join_host  = module.cluster.join_host
+  join_token = module.cluster.join_token
 }

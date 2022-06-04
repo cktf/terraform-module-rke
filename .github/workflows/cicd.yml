@@ -52,17 +52,8 @@ jobs:
 
             - run: echo CodeCoverage
 
-    release:
+    release_git:
         needs: test
-        runs-on: ubuntu-latest
-        if: github.event_name == 'push'
-        steps:
-            - uses: actions/checkout@v3
-
-            - run: echo RegistryPush
-
-    deploy:
-        needs: release
         runs-on: ubuntu-latest
         if: github.event_name == 'push'
         steps:
