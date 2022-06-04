@@ -20,54 +20,38 @@ terraform init
 module "rke" {
   source = "cktf/rke/module"
 
+  name = "master"
   type = "k3s"
-  master_nodes = {
-    0 = {
-      name         = "Master1"
-      pre_create   = ""
-      post_create  = ""
-      pre_destroy  = ""
-      post_destroy = ""
-      labels       = ["platform=linux"]
-      taints       = []
-      connection = {
-        type     = "ssh"
-        host     = "192.168.100.10"
-        user     = "ubuntu"
-        password = "ubuntu"
-      }
-    }
+  labels = {
+    platform = "linux"
   }
-  worker_nodes = {
-    0 = {
-      name         = "Worker1"
-      pre_create   = ""
-      post_create  = ""
-      pre_destroy  = ""
-      post_destroy = ""
-      labels       = ["platform=linux"]
-      taints       = []
-      connection = {
-        type     = "ssh"
-        host     = "192.168.100.20"
-        user     = "ubuntu"
-        password = "ubuntu"
-      }
-    }
-    1 = {
-      name         = "Worker2"
-      pre_create   = ""
-      post_create  = ""
-      pre_destroy  = ""
-      post_destroy = ""
-      labels       = ["platform=linux"]
-      taints       = []
-      connection = {
-        type     = "ssh"
-        host     = "192.168.100.21"
-        user     = "ubuntu"
-        password = "ubuntu"
-      }
+  connections = [{
+    type     = "ssh"
+    host     = "192.168.172.185"
+    port     = 22
+    user     = "ubuntu"
+    password = "ubuntu"
+  }]
+
+  node_pools = {
+    pool1 = {
+      name = "node"
+      connections = [
+        {
+          type     = "ssh"
+          host     = "192.168.172.186"
+          port     = 22
+          user     = "ubuntu"
+          password = "ubuntu"
+        },
+        {
+          type     = "ssh"
+          host     = "192.168.172.187"
+          port     = 22
+          user     = "ubuntu"
+          password = "ubuntu"
+        }
+      ]
     }
   }
 }
