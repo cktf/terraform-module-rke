@@ -15,7 +15,7 @@ install_rke() {
     export INSTALL_${upper(type)}_VERSION="${version}"
     export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
-    export ${upper(type)}_URL="https://${cluster_ip}:6443"
+    export ${upper(type)}_URL="${cluster_url}"
     export ${upper(type)}_TOKEN="${cluster_token}"
 
     mkdir -p /etc/rancher/${type}

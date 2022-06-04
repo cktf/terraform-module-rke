@@ -19,7 +19,7 @@ resource "null_resource" "group" {
       pre_destroy_user_data  = var.pre_destroy_user_data
       post_destroy_user_data = var.post_destroy_user_data
 
-      cluster_ip    = var.cluster_ip
+      cluster_url   = var.cluster_url
       cluster_token = var.cluster_token
     })
   }

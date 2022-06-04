@@ -2,14 +2,14 @@ variable "name" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Name"
+  description = "Node Pool Name"
 }
 
 variable "type" {
   type        = string
   default     = "k3s"
   sensitive   = false
-  description = "Node Group Type"
+  description = "Node Pool Type"
 
   validation {
     condition     = contains(["k3s", "rke2"], var.type)
@@ -21,35 +21,35 @@ variable "version_" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Version"
+  description = "Node Pool Version"
 }
 
 variable "channel" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Channel"
+  description = "Node Pool Channel"
 }
 
 variable "taints" {
   type        = map(string)
   default     = {}
   sensitive   = false
-  description = "Node Group Taints"
+  description = "Node Pool Taints"
 }
 
 variable "labels" {
   type        = map(string)
   default     = {}
   sensitive   = false
-  description = "Node Group Labels"
+  description = "Node Pool Labels"
 }
 
 variable "tags" {
   type        = map(string)
   default     = {}
   sensitive   = false
-  description = "Node Group Tags"
+  description = "Node Pool Tags"
 }
 
 variable "registries" {
@@ -60,68 +60,68 @@ variable "registries" {
   }))
   default     = {}
   sensitive   = false
-  description = "Node Group Registries"
+  description = "Node Pool Registries"
 }
 
 variable "connections" {
   type        = list(any)
   default     = []
-  sensitive   = true
-  description = "Node Group Connections"
+  sensitive   = false
+  description = "Node Pool Connections"
 }
 
-variable "cluster_ip" {
+variable "cluster_url" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Cluster IP"
+  description = "Node Pool Cluster URL"
 }
 
 variable "cluster_token" {
   type        = string
   default     = ""
   sensitive   = true
-  description = "Node Group Cluster Token"
+  description = "Node Pool Cluster Token"
 }
 
 variable "extra_args" {
   type        = list(string)
   default     = []
   sensitive   = false
-  description = "Node Group Extra Arguments"
+  description = "Node Pool Extra Arguments"
 }
 
 variable "extra_envs" {
   type        = map(string)
   default     = {}
   sensitive   = false
-  description = "Node Group Extra Environments"
+  description = "Node Pool Extra Environments"
 }
 
 variable "pre_create_user_data" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Pre-Create user-data"
+  description = "Node Pool Pre-Create user-data"
 }
 
 variable "post_create_user_data" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Post-Create user-data"
+  description = "Node Pool Post-Create user-data"
 }
 
 variable "pre_destroy_user_data" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Pre-Destroy user-data"
+  description = "Node Pool Pre-Destroy user-data"
 }
 
 variable "post_destroy_user_data" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "Node Group Post-Destroy user-data"
+  description = "Node Pool Post-Destroy user-data"
 }

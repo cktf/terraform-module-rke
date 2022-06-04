@@ -1,23 +1,23 @@
 output "host" {
-  value       = "https://${coalesce(var.load_balancer, values(var.master_nodes)[0].connection.host)}:6443"
+  value       = module.cluster.host
   sensitive   = false
-  description = "RKE Host"
+  description = "Cluster Host"
 }
 
 output "token" {
-  value       = "${random_string.token_id.result}.${random_string.token_secret.result}"
+  value       = module.cluster.token
   sensitive   = true
-  description = "RKE Token"
+  description = "Cluster Token"
 }
 
 output "ca_crt" {
-  value       = data.k8sbootstrap_auth.this.ca_crt
+  value       = module.cluster.ca_crt
   sensitive   = true
-  description = "RKE CA Certificate"
+  description = "Cluster CA Certificate"
 }
 
 output "kubeconfig" {
-  value       = data.k8sbootstrap_auth.this.kubeconfig
+  value       = module.cluster.kubeconfig
   sensitive   = true
-  description = "RKE Kubernetes Config"
+  description = "Cluster Kubernetes Config"
 }

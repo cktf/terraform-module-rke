@@ -1,4 +1,11 @@
-variable "cluster_type" {
+variable "name" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "Cluster Name"
+}
+
+variable "type" {
   type        = string
   default     = "k3s"
   sensitive   = false
@@ -10,28 +17,42 @@ variable "cluster_type" {
   }
 }
 
-variable "cluster_name" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "Cluster Name"
-}
-
-variable "cluster_version" {
+variable "version_" {
   type        = string
   default     = ""
   sensitive   = false
   description = "Cluster Version"
 }
 
-variable "cluster_channel" {
+variable "channel" {
   type        = string
   default     = ""
   sensitive   = false
   description = "Cluster Channel"
 }
 
-variable "cluster_registries" {
+variable "taints" {
+  type        = map(string)
+  default     = {}
+  sensitive   = false
+  description = "Cluster Taints"
+}
+
+variable "labels" {
+  type        = map(string)
+  default     = {}
+  sensitive   = false
+  description = "Cluster Labels"
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  sensitive   = false
+  description = "Cluster Tags"
+}
+
+variable "registries" {
   type = map(object({
     endpoint = string
     username = string
@@ -39,44 +60,61 @@ variable "cluster_registries" {
   }))
   default     = {}
   sensitive   = false
-  description = "RKE Registries"
+  description = "Cluster Registries"
 }
 
-variable "load_balancer" {
+variable "connections" {
+  type        = list(any)
+  default     = []
+  sensitive   = false
+  description = "Cluster Connections"
+}
+
+variable "extra_args" {
+  type        = list(string)
+  default     = []
+  sensitive   = false
+  description = "Cluster Extra Arguments"
+}
+
+variable "extra_envs" {
+  type        = map(string)
+  default     = {}
+  sensitive   = false
+  description = "Cluster Extra Environments"
+}
+
+variable "pre_create_user_data" {
   type        = string
   default     = ""
   sensitive   = false
-  description = "RKE Load Balancer"
+  description = "Cluster Pre-Create user-data"
 }
 
-variable "cluster" {
-  type = map(object({
-    pre_create   = string
-    post_create  = string
-    pre_destroy  = string
-    post_destroy = string
-    name         = string
-    labels       = list(string)
-    taints       = list(string)
-    connections  = map(any)
-  }))
-  default     = {}
+variable "post_create_user_data" {
+  type        = string
+  default     = ""
   sensitive   = false
-  description = "RKE Master Nodes"
+  description = "Cluster Post-Create user-data"
+}
+
+variable "pre_destroy_user_data" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "Cluster Pre-Destroy user-data"
+}
+
+variable "post_destroy_user_data" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "Cluster Post-Destroy user-data"
 }
 
 variable "node_pools" {
-  type = map(object({
-    pre_create   = string
-    post_create  = string
-    pre_destroy  = string
-    post_destroy = string
-    name         = string
-    labels       = list(string)
-    taints       = list(string)
-    connection   = map(any)
-  }))
+  type        = map(any)
   default     = {}
   sensitive   = false
-  description = "RKE Worker Nodes"
+  description = "Cluster Node Pools"
 }

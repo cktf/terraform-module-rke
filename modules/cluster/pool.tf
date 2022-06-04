@@ -19,11 +19,11 @@ resource "null_resource" "pool" {
       pre_destroy_user_data  = var.pre_destroy_user_data
       post_destroy_user_data = var.post_destroy_user_data
 
-      cluster_ip    = var.connections[0].host
-      token_id      = random_string.token_id.result
-      token_secret  = random_string.token_secret.result
+      cluster_url   = "https://${var.connections[0].host}:6443"
       cluster_token = random_string.cluster_token.result
       agent_token   = random_string.agent_token.result
+      token_id      = random_string.token_id.result
+      token_secret  = random_string.token_secret.result
     })
   }
 
@@ -56,7 +56,7 @@ resource "null_resource" "pool" {
   provisioner "file" {
     when        = create
     destination = "/tmp/script.sh"
-    content     = templatefile("${path.module}/config/master.create.sh", jsondecode(self.triggers.this))
+    content     = templatefile("${path.module}/templates/create.sh", jsondecode(self.triggers.this))
   }
   provisioner "remote-exec" {
     when = create
@@ -70,7 +70,7 @@ resource "null_resource" "pool" {
   provisioner "file" {
     when        = destroy
     destination = "/tmp/script.sh"
-    content     = templatefile("${path.module}/config/master.destroy.sh", jsondecode(self.triggers.this))
+    content     = templatefile("${path.module}/templates/destroy.sh", jsondecode(self.triggers.this))
   }
   provisioner "remote-exec" {
     when = destroy
