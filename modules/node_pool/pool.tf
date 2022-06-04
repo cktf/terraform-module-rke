@@ -19,8 +19,8 @@ resource "null_resource" "pool" {
       pre_destroy_user_data  = var.pre_destroy_user_data
       post_destroy_user_data = var.post_destroy_user_data
 
-      cluster_url   = var.cluster_url
-      cluster_token = var.cluster_token
+      join_host  = var.join_host
+      join_token = var.join_token
     })
   }
 

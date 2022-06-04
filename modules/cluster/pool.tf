@@ -19,11 +19,11 @@ resource "null_resource" "pool" {
       pre_destroy_user_data  = var.pre_destroy_user_data
       post_destroy_user_data = var.post_destroy_user_data
 
-      cluster_url   = "https://${var.connections[0].host}:6443"
-      cluster_token = random_string.cluster_token.result
-      agent_token   = random_string.agent_token.result
       token_id      = random_string.token_id.result
       token_secret  = random_string.token_secret.result
+      cluster_host  = "https://${var.connections[0].host}:6443"
+      cluster_token = random_string.cluster_token.result
+      agent_token   = random_string.agent_token.result
     })
   }
 

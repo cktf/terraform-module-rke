@@ -36,8 +36,8 @@ module "node_pool" {
   tags                   = try(each.value.tags, {})
   registries             = try(each.value.registries, var.registries)
   connections            = try(each.value.connections, {})
-  cluster_url            = module.cluster.host
-  cluster_token          = module.cluster.agent_token
+  join_host              = module.cluster.join_host
+  join_token             = module.cluster.join_token
   extra_args             = try(each.value.extra_args, var.extra_args)
   extra_envs             = try(each.value.extra_envs, var.extra_envs)
   pre_create_user_data   = try(each.value.pre_create_user_data, var.pre_create_user_data)

@@ -17,7 +17,7 @@ install_rke() {
 
     export ${upper(type)}_TOKEN="${cluster_token}"
     export ${upper(type)}_AGENT_TOKEN="${agent_token}"
-    export INSTALL_${upper(type)}_EXEC="${can(regex("-0$", name)) ? "server --cluster-init" : "server --server ${cluster_url}"} ${join(" ", extra_args)}"
+    export INSTALL_${upper(type)}_EXEC="${can(regex("-0$", name)) ? "server --cluster-init" : "server --server ${cluster_host}"} ${join(" ", extra_args)}"
 
     mkdir -p /etc/rancher/${type}
     mkdir -p /var/lib/rancher/${type}/server/manifests

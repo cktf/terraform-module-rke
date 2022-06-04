@@ -70,20 +70,6 @@ variable "connections" {
   description = "Node Pool Connections"
 }
 
-variable "cluster_url" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "Node Pool Cluster URL"
-}
-
-variable "cluster_token" {
-  type        = string
-  default     = ""
-  sensitive   = true
-  description = "Node Pool Cluster Token"
-}
-
 variable "extra_args" {
   type        = list(string)
   default     = []
@@ -124,4 +110,18 @@ variable "post_destroy_user_data" {
   default     = ""
   sensitive   = false
   description = "Node Pool Post-Destroy user-data"
+}
+
+variable "join_host" {
+  type        = string
+  default     = ""
+  sensitive   = false
+  description = "Node Pool Join Host"
+}
+
+variable "join_token" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "Node Pool Join Token"
 }

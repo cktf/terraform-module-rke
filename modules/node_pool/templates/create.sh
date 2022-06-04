@@ -15,8 +15,8 @@ install_rke() {
     export INSTALL_${upper(type)}_VERSION="${version}"
     export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
-    export ${upper(type)}_URL="${cluster_url}"
-    export ${upper(type)}_TOKEN="${cluster_token}"
+    export ${upper(type)}_URL="${join_host}"
+    export ${upper(type)}_TOKEN="${join_token}"
     export INSTALL_${upper(type)}_EXEC="agent ${join(" ", extra_args)}"
 
     mkdir -p /etc/rancher/${type}
