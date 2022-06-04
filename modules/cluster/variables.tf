@@ -45,13 +45,6 @@ variable "labels" {
   description = "Cluster Labels"
 }
 
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  sensitive   = false
-  description = "Cluster Tags"
-}
-
 variable "registries" {
   type = map(object({
     endpoint = string

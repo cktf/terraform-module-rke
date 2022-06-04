@@ -45,13 +45,6 @@ variable "labels" {
   description = "Node Pool Labels"
 }
 
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  sensitive   = false
-  description = "Node Pool Tags"
-}
-
 variable "registries" {
   type = map(object({
     endpoint = string

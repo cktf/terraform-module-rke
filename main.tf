@@ -12,7 +12,6 @@ module "cluster" {
   channel                = var.channel
   taints                 = var.taints
   labels                 = var.labels
-  tags                   = var.tags
   registries             = var.registries
   connections            = var.connections
   extra_args             = var.extra_args
@@ -33,7 +32,6 @@ module "node_pool" {
   channel                = try(each.value.channel, var.channel)
   taints                 = try(each.value.taints, {})
   labels                 = try(each.value.labels, {})
-  tags                   = try(each.value.tags, {})
   registries             = try(each.value.registries, var.registries)
   connections            = try(each.value.connections, {})
   join_host              = module.cluster.join_host
