@@ -1,4 +1,4 @@
-resource "null_resource" "pool" {
+resource "null_resource" "server" {
   for_each   = { for idx, val in var.connections : idx => val }
   depends_on = [null_resource.firewall]
 
