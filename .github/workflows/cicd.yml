@@ -1,12 +1,8 @@
 name: CI/CD
 
 on:
+    pull_request: { branches: ["*"] }
     push:
-        branches:
-            - "+([0-9])?(.{+([0-9]),x}).x"
-            - main
-            - next
-    pull_request:
         branches:
             - "+([0-9])?(.{+([0-9]),x}).x"
             - main
@@ -34,15 +30,11 @@ jobs:
                   path: build/
                   key: ${{ github.sha }}
 
-            - run: cp .github/.versionrc.js .
-            - run: npx standard-version
-
             - run: terraform init
             - run: terraform fmt -check
             - run: terraform validate -no-color
             - run: mkdir -p build
             - run: cp -R .terraform.lock.hcl *.tf build
-            - run: cp .env VERSION CHANNEL CHANGELOG build
 
     test:
         needs: build
@@ -52,7 +44,7 @@ jobs:
 
             - run: echo CodeCoverage
 
-    release_git:
+    release:
         needs: test
         runs-on: ubuntu-latest
         if: github.event_name == 'push'
@@ -63,13 +55,9 @@ jobs:
                   path: build/
                   key: ${{ github.sha }}
 
-            - run: echo "VERSION=$(cat build/VERSION)" >> $GITHUB_ENV
-            - run: echo "CHANNEL=$(cat build/CHANNEL)" >> $GITHUB_ENV
-            - run: git tag ${{ env.VERSION }}
-            - run: git push --tag
-            - uses: softprops/action-gh-release@v1
-              with:
-                  tag_name: ${{ env.VERSION }}
-                  prerelease: ${{ env.CHANNEL != 'latest' }}
-                  body_path: build/CHANGELOG
-                  files: build/**
+            - run: cp .github/.releaserc.yml .
+
+            - run: npm i -g semantic-release @semantic-release/changelog @semantic-release/github @semantic-release/git
+            - run: semantic-release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
