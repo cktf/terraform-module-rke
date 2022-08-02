@@ -5,17 +5,20 @@ resource "null_resource" "nodes" {
   triggers = {
     connection = jsonencode(each.value.connection)
     this = jsonencode({
+      name       = "agent"
       type       = var.type
       channel    = var.channel
       version    = var.version_
       registries = var.registries
 
-      taints                = try(each.value.taints, {})
-      labels                = try(each.value.labels, {})
-      extra_args            = try(each.value.extra_args, [])
-      extra_envs            = try(each.value.extra_envs, {})
-      pre_create_user_data  = try(each.value.pre_create_user_data, "")
-      post_create_user_data = try(each.value.post_create_user_data, "")
+      taints                 = try(each.value.taints, {})
+      labels                 = try(each.value.labels, {})
+      extra_args             = try(each.value.extra_args, [])
+      extra_envs             = try(each.value.extra_envs, {})
+      pre_create_user_data   = try(each.value.pre_create_user_data, "")
+      post_create_user_data  = try(each.value.post_create_user_data, "")
+      pre_destroy_user_data  = try(each.value.pre_destroy_user_data, "")
+      post_destroy_user_data = try(each.value.post_destroy_user_data, "")
 
       join_host  = local.private_alb
       join_token = random_string.agent_token.result

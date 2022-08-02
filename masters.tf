@@ -13,18 +13,21 @@ resource "null_resource" "this" {
   triggers = {
     connection = jsonencode(each.value.connection)
     this = jsonencode({
+      name       = "server"
       type       = var.type
       channel    = var.channel
       version    = var.version_
       registries = var.registries
       pods_cidr  = var.pods_cidr
 
-      taints                = try(each.value.taints, {})
-      labels                = try(each.value.labels, {})
-      extra_args            = try(each.value.extra_args, [])
-      extra_envs            = try(each.value.extra_envs, {})
-      pre_create_user_data  = try(each.value.pre_create_user_data, "")
-      post_create_user_data = try(each.value.post_create_user_data, "")
+      taints                 = try(each.value.taints, {})
+      labels                 = try(each.value.labels, {})
+      extra_args             = try(each.value.extra_args, [])
+      extra_envs             = try(each.value.extra_envs, {})
+      pre_create_user_data   = try(each.value.pre_create_user_data, "")
+      post_create_user_data  = try(each.value.post_create_user_data, "")
+      pre_destroy_user_data  = try(each.value.pre_destroy_user_data, "")
+      post_destroy_user_data = try(each.value.post_destroy_user_data, "")
 
       leader        = (each.key == keys(var.masters)[0])
       private_ip    = local.private_alb
