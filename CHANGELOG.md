@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/cktf/terraform-module-rke/compare/1.12.0...1.12.1) (2022-08-02)
+
+
+### Bug Fixes
+
+* add pre, post destroy scripts ([b474fe0](https://github.com/cktf/terraform-module-rke/commit/b474fe078c26439786d77b9e199f82f99cbc2262))
+
 # [1.12.0](https://github.com/cktf/terraform-module-rke/compare/1.11.1...1.12.0) (2022-08-02)
 
 
