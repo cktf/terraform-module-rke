@@ -5,7 +5,6 @@ resource "null_resource" "nodes" {
   triggers = {
     connection = jsonencode(each.value.connection)
     this = jsonencode({
-      name       = "${var.name}-node-${each.key}"
       type       = var.type
       channel    = var.channel
       version    = var.version_

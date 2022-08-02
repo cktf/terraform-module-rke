@@ -1,10 +1,3 @@
-variable "name" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "Cluster Name"
-}
-
 variable "type" {
   type        = string
   default     = "k3s"

@@ -20,38 +20,36 @@ terraform init
 module "rke" {
   source = "cktf/rke/module"
 
-  name = "master"
-  type = "k3s"
-  labels = {
-    platform = "linux"
+  masters = {
+    1 = {
+      connection = {
+        type     = "ssh"
+        host     = "192.168.172.185"
+        port     = 22
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
+    }
   }
-  connections = [{
-    type     = "ssh"
-    host     = "192.168.172.185"
-    port     = 22
-    user     = "ubuntu"
-    password = "ubuntu"
-  }]
 
-  node_pools = {
-    pool1 = {
-      name = "node"
-      connections = [
-        {
-          type     = "ssh"
-          host     = "192.168.172.186"
-          port     = 22
-          user     = "ubuntu"
-          password = "ubuntu"
-        },
-        {
-          type     = "ssh"
-          host     = "192.168.172.187"
-          port     = 22
-          user     = "ubuntu"
-          password = "ubuntu"
-        }
-      ]
+  nodes = {
+    1 = {
+      connection = {
+        type     = "ssh"
+        host     = "192.168.172.186"
+        port     = 22
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
+    }
+    2 = {
+      connection = {
+        type     = "ssh"
+        host     = "192.168.172.186"
+        port     = 22
+        user     = "ubuntu"
+        password = "ubuntu"
+      }
     }
   }
 }

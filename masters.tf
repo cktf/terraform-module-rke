@@ -13,7 +13,6 @@ resource "null_resource" "this" {
   triggers = {
     connection = jsonencode(each.value.connection)
     this = jsonencode({
-      name       = "${var.name}-master-${each.key}"
       type       = var.type
       channel    = var.channel
       version    = var.version_
