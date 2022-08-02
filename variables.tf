@@ -17,32 +17,18 @@ variable "type" {
   }
 }
 
-variable "version_" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "Cluster Version"
-}
-
 variable "channel" {
   type        = string
-  default     = ""
+  default     = "latest"
   sensitive   = false
   description = "Cluster Channel"
 }
 
-variable "taints" {
-  type        = map(string)
-  default     = {}
+variable "version_" {
+  type        = string
+  default     = "v1.24.3+k3s1"
   sensitive   = false
-  description = "Cluster Taints"
-}
-
-variable "labels" {
-  type        = map(string)
-  default     = {}
-  sensitive   = false
-  description = "Cluster Labels"
+  description = "Cluster Version"
 }
 
 variable "registries" {
@@ -56,58 +42,37 @@ variable "registries" {
   description = "Cluster Registries"
 }
 
-variable "connections" {
-  type        = list(any)
-  default     = []
-  sensitive   = false
-  description = "Cluster Connections"
-}
-
-variable "extra_args" {
-  type        = list(string)
-  default     = []
-  sensitive   = false
-  description = "Cluster Extra Arguments"
-}
-
-variable "extra_envs" {
-  type        = map(string)
-  default     = {}
-  sensitive   = false
-  description = "Cluster Extra Environments"
-}
-
-variable "pre_create_user_data" {
+variable "pods_cidr" {
   type        = string
-  default     = ""
+  default     = "10.244.0.0/16"
   sensitive   = false
-  description = "Cluster Pre-Create user-data"
+  description = "Cluster Pods CIDR"
 }
 
-variable "post_create_user_data" {
+variable "private_alb" {
   type        = string
-  default     = ""
+  default     = null
   sensitive   = false
-  description = "Cluster Post-Create user-data"
+  description = "Cluster ALB Private IP"
 }
 
-variable "pre_destroy_user_data" {
+variable "public_alb" {
   type        = string
-  default     = ""
+  default     = null
   sensitive   = false
-  description = "Cluster Pre-Destroy user-data"
+  description = "Cluster ALB Public IP"
 }
 
-variable "post_destroy_user_data" {
-  type        = string
-  default     = ""
-  sensitive   = false
-  description = "Cluster Post-Destroy user-data"
-}
-
-variable "node_pools" {
+variable "masters" {
   type        = map(any)
   default     = {}
   sensitive   = false
-  description = "Cluster Node Pools"
+  description = "Cluster Masters"
+}
+
+variable "nodes" {
+  type        = map(any)
+  default     = {}
+  sensitive   = false
+  description = "Cluster Nodes"
 }

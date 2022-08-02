@@ -1,8 +1,40 @@
-resource "null_resource" "firewall" {
-  for_each = { for idx, val in var.connections : idx => val }
+locals {
+  private_alb = try(var.private_alb, values(var.masters)[0].connection.host)
+  public_alb  = try(var.public_alb, values(var.masters)[0].connection.host)
+  bootstrap_file = templatefile("${path.module}/templates/manifests/bootstrap.yml", {
+    token_id     = random_string.token_id.result
+    token_secret = random_string.token_secret.result
+  })
+}
+
+resource "null_resource" "this" {
+  for_each = var.masters
 
   triggers = {
-    connection = jsonencode(each.value)
+    connection = jsonencode(each.value.connection)
+    this = jsonencode({
+      name       = "${var.name}-master-${each.key}"
+      type       = var.type
+      channel    = var.channel
+      version    = var.version_
+      registries = var.registries
+      pods_cidr  = var.pods_cidr
+
+      taints                = try(each.value.taints, {})
+      labels                = try(each.value.labels, {})
+      extra_args            = try(each.value.extra_args, [])
+      extra_envs            = try(each.value.extra_envs, {})
+      pre_create_user_data  = try(each.value.pre_create_user_data, "")
+      post_create_user_data = try(each.value.post_create_user_data, "")
+
+      leader        = (each.key == keys(var.masters)[0])
+      private_ip    = local.private_alb
+      public_ip     = local.public_alb
+      cluster_token = random_string.cluster_token.result
+      agent_token   = random_string.agent_token.result
+
+      bootstrap_file = local.bootstrap_file
+    })
   }
 
   connection {
@@ -31,39 +63,31 @@ resource "null_resource" "firewall" {
     bastion_certificate = try(jsondecode(self.triggers.connection).bastion_certificate, null)
   }
 
+  provisioner "file" {
+    when        = create
+    destination = "/tmp/script.sh"
+    content     = templatefile("${path.module}/templates/server.sh", jsondecode(self.triggers.this))
+  }
   provisioner "remote-exec" {
     when = create
     inline = [
       "echo '${jsondecode(self.triggers.connection).password}' | sudo -S -v",
-      "sudo ufw allow http",
-      "sudo ufw allow https",
-      "sudo ufw allow 2379",
-      "sudo ufw allow 2380",
-      "sudo ufw allow 6443",
-      "sudo ufw allow 9345",
-      "sudo ufw allow 10250",
-      "sudo ufw allow 179",
-      "sudo ufw allow 4789",
-      "sudo ufw allow 5473",
-      "sudo ufw --force enable",
+      "sudo chmod +x /tmp/script.sh",
+      "sudo /tmp/script.sh",
     ]
   }
 
+  provisioner "file" {
+    when        = destroy
+    destination = "/tmp/script.sh"
+    content     = templatefile("${path.module}/templates/destroy.sh", jsondecode(self.triggers.this))
+  }
   provisioner "remote-exec" {
     when = destroy
     inline = [
       "echo '${jsondecode(self.triggers.connection).password}' | sudo -S -v",
-      "sudo ufw disable",
-      "sudo ufw deny http",
-      "sudo ufw deny https",
-      "sudo ufw deny 2379",
-      "sudo ufw deny 2380",
-      "sudo ufw deny 6443",
-      "sudo ufw deny 9345",
-      "sudo ufw deny 10250",
-      "sudo ufw deny 179",
-      "sudo ufw deny 4789",
-      "sudo ufw deny 5473",
+      "sudo chmod +x /tmp/script.sh",
+      "sudo /tmp/script.sh",
     ]
   }
 }

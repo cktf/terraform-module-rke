@@ -1,29 +1,25 @@
-resource "null_resource" "server" {
-  for_each   = { for idx, val in var.connections : idx => val }
-  depends_on = [null_resource.firewall]
+resource "null_resource" "nodes" {
+  for_each   = var.nodes
+  depends_on = [null_resource.this]
 
   triggers = {
-    connection = jsonencode(each.value)
+    connection = jsonencode(each.value.connection)
     this = jsonencode({
-      name                   = "${var.name}-${each.key}"
-      type                   = var.type
-      version                = var.version_
-      channel                = var.channel
-      taints                 = var.taints
-      labels                 = var.labels
-      registries             = var.registries
-      extra_args             = var.extra_args
-      extra_envs             = var.extra_envs
-      pre_create_user_data   = var.pre_create_user_data
-      post_create_user_data  = var.post_create_user_data
-      pre_destroy_user_data  = var.pre_destroy_user_data
-      post_destroy_user_data = var.post_destroy_user_data
+      name       = "${var.name}-node-${each.key}"
+      type       = var.type
+      channel    = var.channel
+      version    = var.version_
+      registries = var.registries
 
-      token_id      = random_string.token_id.result
-      token_secret  = random_string.token_secret.result
-      cluster_host  = "https://${var.connections[0].host}:6443"
-      cluster_token = random_string.cluster_token.result
-      agent_token   = random_string.agent_token.result
+      taints                = try(each.value.taints, {})
+      labels                = try(each.value.labels, {})
+      extra_args            = try(each.value.extra_args, [])
+      extra_envs            = try(each.value.extra_envs, {})
+      pre_create_user_data  = try(each.value.pre_create_user_data, "")
+      post_create_user_data = try(each.value.post_create_user_data, "")
+
+      join_host  = local.private_alb
+      join_token = random_string.agent_token.result
     })
   }
 
@@ -56,7 +52,7 @@ resource "null_resource" "server" {
   provisioner "file" {
     when        = create
     destination = "/tmp/script.sh"
-    content     = templatefile("${path.module}/templates/create.sh", jsondecode(self.triggers.this))
+    content     = templatefile("${path.module}/templates/agent.sh", jsondecode(self.triggers.this))
   }
   provisioner "remote-exec" {
     when = create
