@@ -1,3 +1,10 @@
+## [1.12.2](https://github.com/cktf/terraform-module-rke/compare/1.12.1...1.12.2) (2022-08-02)
+
+
+### Bug Fixes
+
+* add extra_args, extra_envs to agent nodes ([f7389fe](https://github.com/cktf/terraform-module-rke/commit/f7389fe22e5efc706422e8b3c12ddc2d079e2a73))
+
 ## [1.12.1](https://github.com/cktf/terraform-module-rke/compare/1.12.0...1.12.1) (2022-08-02)
 
 
