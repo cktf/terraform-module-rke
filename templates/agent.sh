@@ -10,7 +10,7 @@ export INSTALL_${upper(type)}_CHANNEL="${channel}"
 
 export ${upper(type)}_URL="https://${join_host}:6443"
 export ${upper(type)}_TOKEN="${join_token}"
-export INSTALL_${upper(type)}_EXEC="agent"
+export INSTALL_${upper(type)}_EXEC="agent ${join(" ", extra_args)}"
 
 mkdir -p /etc/rancher/${type}
 cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
@@ -37,6 +37,12 @@ cat <<-EOF | sed -r 's/^ {8}//' | tee /etc/rancher/${type}/registries.yaml > /de
 EOF
 
 curl -sfL https://get.${type}.io | sh -
+
+cat <<-EOF | sed -r 's/^ {4}//' | tee -a /etc/systemd/system/${type}-agent.service.env > /dev/null
+    %{ for key, val in extra_envs }
+    ${key}="${val}"
+    %{ endfor }
+EOF
 
 systemctl enable ${type}-agent.service
 systemctl start ${type}-agent.service
