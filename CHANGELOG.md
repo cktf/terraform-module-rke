@@ -1,3 +1,10 @@
+## [1.12.3](https://github.com/cktf/terraform-module-rke/compare/1.12.2...1.12.3) (2022-08-03)
+
+
+### Bug Fixes
+
+* change template file names ([435e044](https://github.com/cktf/terraform-module-rke/commit/435e044ec7186169a759ec559f0d5f8bf9764e39))
+
 ## [1.12.2](https://github.com/cktf/terraform-module-rke/compare/1.12.1...1.12.2) (2022-08-02)
 
 
