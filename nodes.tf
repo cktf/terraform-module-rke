@@ -54,7 +54,7 @@ resource "null_resource" "nodes" {
   provisioner "file" {
     when        = create
     destination = "/tmp/script.sh"
-    content     = templatefile("${path.module}/templates/agent.sh", jsondecode(self.triggers.this))
+    content     = templatefile("${path.module}/templates/node.sh", jsondecode(self.triggers.this))
   }
   provisioner "remote-exec" {
     when = create
