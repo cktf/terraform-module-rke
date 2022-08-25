@@ -1,6 +1,6 @@
 locals {
-  private_alb = try(var.private_alb, values(var.masters)[0].connection.host)
-  public_alb  = try(var.public_alb, values(var.masters)[0].connection.host)
+  private_alb = coalesce(var.private_alb, values(var.masters)[0].connection.host)
+  public_alb  = coalesce(var.public_alb, values(var.masters)[0].connection.host)
   bootstrap_file = templatefile("${path.module}/templates/manifests/bootstrap.yml", {
     token_id     = random_string.token_id.result
     token_secret = random_string.token_secret.result
