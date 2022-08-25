@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/cktf/terraform-module-rke/compare/1.12.4...1.13.0) (2022-08-25)
+
+
+### Features
+
+* enable metrics-server by default ([3f15459](https://github.com/cktf/terraform-module-rke/commit/3f15459267821ed2e0b20041d5389ed0c0bb2cac))
+
 ## [1.12.4](https://github.com/cktf/terraform-module-rke/compare/1.12.3...1.12.4) (2022-08-25)
 
 
