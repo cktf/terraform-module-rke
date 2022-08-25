@@ -1,3 +1,10 @@
+## [1.12.4](https://github.com/cktf/terraform-module-rke/compare/1.12.3...1.12.4) (2022-08-25)
+
+
+### Bug Fixes
+
+* default value for private_alb, public_alb on empty ([f79d701](https://github.com/cktf/terraform-module-rke/commit/f79d701054ba00ba6f58f80a5a642d7842e101b1))
+
 ## [1.12.3](https://github.com/cktf/terraform-module-rke/compare/1.12.2...1.12.3) (2022-08-03)
 
 
