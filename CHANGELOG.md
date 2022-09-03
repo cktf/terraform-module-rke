@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/cktf/terraform-module-rke/compare/1.13.0...1.14.0) (2022-09-03)
+
+
+### Features
+
+* add linux support to terraform lock file ([9657ad5](https://github.com/cktf/terraform-module-rke/commit/9657ad5f910d2c661f6338585be7e3652095285a))
+
 # [1.13.0](https://github.com/cktf/terraform-module-rke/compare/1.12.4...1.13.0) (2022-08-25)
 
 
