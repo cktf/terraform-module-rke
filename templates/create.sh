@@ -16,7 +16,7 @@ mkdir -p /etc/rancher/${type}
 mkdir -p /var/lib/rancher/${type}/server/manifests
 cat <<-EOF | sed -r 's/^ {4}//' | tee /etc/rancher/${type}/config.yaml > /dev/null
     write-kubeconfig-mode: "0644"
-    disable: ["servicelb", "traefik"]
+    disable: ["local-storage", "servicelb", "traefik"]
     kube-apiserver-arg: ["enable-bootstrap-token-auth"]
     tls-san: ["${private_ip}", "${public_ip}"]
     cluster-cidr: "${pods_cidr}"
