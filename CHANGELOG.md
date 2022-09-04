@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/cktf/terraform-module-rke/compare/1.14.0...1.14.1) (2022-09-04)
+
+
+### Bug Fixes
+
+* disable local-storage by default ([5664801](https://github.com/cktf/terraform-module-rke/commit/566480120836267edb8d9bcbdac25e6da1a84847))
+
 # [1.14.0](https://github.com/cktf/terraform-module-rke/compare/1.13.0...1.14.0) (2022-09-03)
 
 
