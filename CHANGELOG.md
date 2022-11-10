@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/cktf/terraform-module-rke/compare/1.14.1...1.14.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* change version constraints ([3eb7927](https://github.com/cktf/terraform-module-rke/commit/3eb7927c34425ff93b3b3c1257d7ac24e43e2979))
+
 ## [1.14.1](https://github.com/cktf/terraform-module-rke/compare/1.14.0...1.14.1) (2022-09-04)
 
 
