@@ -1,3 +1,10 @@
+## [1.14.3](https://github.com/cktf/terraform-module-rke/compare/1.14.2...1.14.3) (2022-12-15)
+
+
+### Bug Fixes
+
+* run post create script before starting service ([74ad6bb](https://github.com/cktf/terraform-module-rke/commit/74ad6bbb6b3a36e4f9a34bf854d28b8db9378b3f))
+
 ## [1.14.2](https://github.com/cktf/terraform-module-rke/compare/1.14.1...1.14.2) (2022-11-10)
 
 
