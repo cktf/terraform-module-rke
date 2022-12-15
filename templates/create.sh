@@ -56,7 +56,7 @@ cat <<-EOF | sed -r 's/^ {4}//' | tee -a /etc/systemd/system/${type}-server.serv
     %{ endfor }
 EOF
 
+${post_create_user_data}
+
 systemctl enable ${type}-server.service
 systemctl start ${type}-server.service
-
-${post_create_user_data}

@@ -44,7 +44,7 @@ cat <<-EOF | sed -r 's/^ {4}//' | tee -a /etc/systemd/system/${type}-agent.servi
     %{ endfor }
 EOF
 
+${post_create_user_data}
+
 systemctl enable ${type}-agent.service
 systemctl start ${type}-agent.service
-
-${post_create_user_data}
