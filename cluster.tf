@@ -10,8 +10,8 @@ locals {
         "write-kubeconfig-mode" = "0644"
         "cluster-init"          = (key == keys(var.masters)[0] ? "true" : "false")
         "server"                = "https://${var.server_ip}:6443"
-        "token"                 = random_string.server.result
-        "agent-token"           = random_string.agent.result
+        "token"                 = random_password.server.result
+        "agent-token"           = random_password.agent.result
       })))
     }) },
     { for key, val in var.workers : "worker_${key}" => merge(val, {
@@ -21,7 +21,7 @@ locals {
       registries = base64encode(yamlencode(merge(var.registries, try(val.registries, {}))))
       configs = base64encode(yamlencode(merge(var.configs, try(val.configs, {}), {
         "server"      = "https://${var.server_ip}:6443"
-        "agent-token" = random_string.agent.result
+        "agent-token" = random_password.agent.result
       })))
     }) }
   )
