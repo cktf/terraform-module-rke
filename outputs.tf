@@ -1,7 +1,13 @@
 output "host" {
   value       = "https://${var.server_ip}:6443"
+  sensitive   = false
+  description = "Cluster Host"
+}
+
+output "token" {
+  value       = random_password.agent.result
   sensitive   = true
-  description = "Cluster CA Certificate"
+  description = "Cluster Token"
 }
 
 output "client_key" {
