@@ -1,3 +1,18 @@
+# [1.15.0](https://github.com/cktf/terraform-module-rke/compare/1.14.3...1.15.0) (2023-12-11)
+
+
+### Bug Fixes
+
+* base64decode certs and key ([120292b](https://github.com/cktf/terraform-module-rke/commit/120292b793c4201cf9128568d709759a698a28ad))
+* change .terraform.lock.hcl ([46d7fe8](https://github.com/cktf/terraform-module-rke/commit/46d7fe8e6e0e60e203b48534e4d8ef7039ddae66))
+* change install script add export ([40c6c82](https://github.com/cktf/terraform-module-rke/commit/40c6c82914d1949b827e0550109f42cf8ac7f1e3))
+* change random_string to random_password ([53f29cb](https://github.com/cktf/terraform-module-rke/commit/53f29cbfb7a122620e1465d47aaff90371bb736a))
+
+
+### Features
+
+* add new cluster installer ([25e912a](https://github.com/cktf/terraform-module-rke/commit/25e912a5c55edc306b6b9b5b6584d87cc2e28759))
+
 ## [1.14.3](https://github.com/cktf/terraform-module-rke/compare/1.14.2...1.14.3) (2022-12-15)
 
 
