@@ -12,7 +12,7 @@ output "client_key" {
 
 output "client_cert" {
   value       = yamldecode(ssh_sensitive_resource.kubeconfig.result).users[0].user.client-certificate-data
-  sensitive   = false
+  sensitive   = true
   description = "Cluster Client Certificate"
 }
 

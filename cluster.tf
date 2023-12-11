@@ -9,7 +9,7 @@ locals {
       configs = base64encode(yamlencode(merge(var.configs, try(val.configs, {}), {
         "write-kubeconfig-mode" = "0644"
         "cluster-init"          = (key == keys(var.masters)[0] ? "true" : "false")
-        "server"                = "https://${var.server_ip}:6443"
+        "server"                = (key == keys(var.masters)[0] ? "" : "https://${var.server_ip}:6443")
         "token"                 = random_password.server.result
         "agent-token"           = random_password.agent.result
       })))
@@ -20,8 +20,8 @@ locals {
       version    = try(val.version, var.version_)
       registries = base64encode(yamlencode(merge(var.registries, try(val.registries, {}))))
       configs = base64encode(yamlencode(merge(var.configs, try(val.configs, {}), {
-        "server"      = "https://${var.server_ip}:6443"
-        "agent-token" = random_password.agent.result
+        "server" = "https://${var.server_ip}:6443"
+        "token"  = random_password.agent.result
       })))
     }) }
   )
@@ -34,11 +34,11 @@ module "install" {
 
   connection = each.value.connection
   create = join("\n", [
-    "INSTALL_${upper(var.type)}_SKIP_START=true",
-    "INSTALL_${upper(var.type)}_NAME=${each.value.exec}",
-    "INSTALL_${upper(var.type)}_EXEC=${each.value.exec}",
-    "INSTALL_${upper(var.type)}_CHANNEL=${each.value.channel}",
-    "INSTALL_${upper(var.type)}_VERSION=${each.value.version}",
+    "export INSTALL_${upper(var.type)}_SKIP_START=true",
+    "export INSTALL_${upper(var.type)}_NAME=${each.value.exec}",
+    "export INSTALL_${upper(var.type)}_EXEC=${each.value.exec}",
+    "export INSTALL_${upper(var.type)}_CHANNEL=${each.value.channel}",
+    "export INSTALL_${upper(var.type)}_VERSION=${each.value.version}",
     "mkdir -p /etc/rancher/${var.type} /var/lib/rancher/${var.type}/${each.value.exec}/manifests",
     "curl -sfL https://get.${var.type}.io | sh -"
   ])
