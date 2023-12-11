@@ -12,48 +12,49 @@ variable "type" {
 
 variable "channel" {
   type        = string
-  default     = "latest"
+  default     = "stable"
   sensitive   = false
   description = "Cluster Channel"
+
+  validation {
+    condition     = contains(["stable", "latest", "testing"], var.channel)
+    error_message = "Valid values for `channel` are (stable, latest, testing)."
+  }
 }
 
 variable "version_" {
   type        = string
-  default     = "v1.24.3+k3s1"
+  default     = ""
   sensitive   = false
   description = "Cluster Version"
 }
 
+variable "addons" {
+  type        = map(string)
+  default     = {}
+  sensitive   = false
+  description = "Cluster AddOns"
+}
+
+variable "configs" {
+  type        = any
+  default     = {}
+  sensitive   = false
+  description = "Cluster Configs"
+}
+
 variable "registries" {
-  type = map(object({
-    endpoint = string
-    username = string
-    password = string
-  }))
+  type        = any
   default     = {}
   sensitive   = false
   description = "Cluster Registries"
 }
 
-variable "pods_cidr" {
-  type        = string
-  default     = "10.244.0.0/16"
-  sensitive   = false
-  description = "Cluster Pods CIDR"
-}
-
-variable "private_alb" {
+variable "server_ip" {
   type        = string
   default     = null
   sensitive   = false
-  description = "Cluster ALB Private IP"
-}
-
-variable "public_alb" {
-  type        = string
-  default     = null
-  sensitive   = false
-  description = "Cluster ALB Public IP"
+  description = "Cluster Server IP"
 }
 
 variable "masters" {
@@ -63,9 +64,9 @@ variable "masters" {
   description = "Cluster Masters"
 }
 
-variable "nodes" {
+variable "workers" {
   type        = map(any)
   default     = {}
   sensitive   = false
-  description = "Cluster Nodes"
+  description = "Cluster Workers"
 }
