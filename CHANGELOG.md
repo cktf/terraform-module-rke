@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/cktf/terraform-module-rke/compare/1.15.0...1.16.0) (2023-12-11)
+
+
+### Features
+
+* add agent token output ([251e245](https://github.com/cktf/terraform-module-rke/commit/251e245437cfdcc02991a899b65a21776d21d67d))
+
 # [1.15.0](https://github.com/cktf/terraform-module-rke/compare/1.14.3...1.15.0) (2023-12-11)
 
 
