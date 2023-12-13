@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/cktf/terraform-module-rke/compare/1.18.0...1.19.0) (2023-12-13)
+
+
+### Features
+
+* add port output ([beaf360](https://github.com/cktf/terraform-module-rke/commit/beaf360dbaf821ff731359f68ee3729a5104a8f2))
+
 # [1.18.0](https://github.com/cktf/terraform-module-rke/compare/1.17.0...1.18.0) (2023-12-13)
 
 
