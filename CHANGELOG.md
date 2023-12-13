@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/cktf/terraform-module-rke/compare/1.17.0...1.18.0) (2023-12-13)
+
+
+### Features
+
+* separate ports for k3s and rke2 ([283c979](https://github.com/cktf/terraform-module-rke/commit/283c979cd6622eebc9f57f5bed82cd81359d4fa1))
+
 # [1.17.0](https://github.com/cktf/terraform-module-rke/compare/1.16.0...1.17.0) (2023-12-13)
 
 
