@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/cktf/terraform-module-rke/compare/1.19.0...1.19.1) (2023-12-13)
+
+
+### Bug Fixes
+
+* change output names ([689ffb2](https://github.com/cktf/terraform-module-rke/commit/689ffb20dd080a4e8c80a7a83f05ba8b72a48fcc))
+
 # [1.19.0](https://github.com/cktf/terraform-module-rke/compare/1.18.0...1.19.0) (2023-12-13)
 
 
