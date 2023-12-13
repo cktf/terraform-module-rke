@@ -29,7 +29,7 @@ locals {
 
 module "install" {
   source   = "cktf/script/module"
-  version  = "1.0.1"
+  version  = "1.1.0"
   for_each = local.servers
 
   connection = each.value.connection
@@ -49,7 +49,7 @@ module "install" {
 
 module "configs" {
   source     = "cktf/script/module"
-  version    = "1.0.1"
+  version    = "1.1.0"
   for_each   = local.servers
   depends_on = [module.install]
 
@@ -63,7 +63,7 @@ module "configs" {
 
 module "addons" {
   source     = "cktf/script/module"
-  version    = "1.0.1"
+  version    = "1.1.0"
   for_each   = var.addons
   depends_on = [module.configs]
 
