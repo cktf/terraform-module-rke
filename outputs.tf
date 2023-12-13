@@ -1,5 +1,5 @@
 output "host" {
-  value       = "https://${var.server_ip}:6443"
+  value       = "https://${var.server_ip}:${local.port}"
   sensitive   = false
   description = "Cluster Host"
 }
