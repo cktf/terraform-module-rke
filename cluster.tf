@@ -1,5 +1,4 @@
 locals {
-  port       = var.type == "k3s" ? "6443" : "9345"
   leader_key = keys(var.servers)[0]
 }
 

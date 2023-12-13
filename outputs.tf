@@ -1,7 +1,13 @@
 output "host" {
-  value       = "https://${var.server_ip}:${local.port}"
+  value       = var.server_ip
   sensitive   = false
   description = "Cluster Host"
+}
+
+output "port" {
+  value       = local.port
+  sensitive   = false
+  description = "Cluster Port"
 }
 
 output "token" {

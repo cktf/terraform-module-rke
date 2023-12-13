@@ -11,3 +11,7 @@ terraform {
     }
   }
 }
+
+locals {
+  port = var.type == "k3s" ? "6443" : "9345"
+}
