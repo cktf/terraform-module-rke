@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/cktf/terraform-module-rke/compare/1.16.0...1.17.0) (2023-12-13)
+
+
+### Features
+
+* upgrade script modules ([3e0477a](https://github.com/cktf/terraform-module-rke/commit/3e0477a289fc3050d5904810bd33fca9e16dcae5))
+
 # [1.16.0](https://github.com/cktf/terraform-module-rke/compare/1.15.0...1.16.0) (2023-12-11)
 
 
