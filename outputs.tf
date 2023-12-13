@@ -17,19 +17,19 @@ output "token" {
 }
 
 output "client_key" {
-  value       = base64decode(yamldecode(ssh_sensitive_resource.kubeconfig.result).clusters[0].cluster.certificate-authority-data)
+  value       = base64decode(yamldecode(ssh_sensitive_resource.kubeconfig.result).users[0].user.client-key-data)
   sensitive   = true
   description = "Cluster Client Key"
 }
 
-output "client_cert" {
+output "client_crt" {
   value       = base64decode(yamldecode(ssh_sensitive_resource.kubeconfig.result).users[0].user.client-certificate-data)
   sensitive   = true
   description = "Cluster Client Certificate"
 }
 
-output "ca_cert" {
-  value       = base64decode(yamldecode(ssh_sensitive_resource.kubeconfig.result).users[0].user.client-key-data)
+output "ca_crt" {
+  value       = base64decode(yamldecode(ssh_sensitive_resource.kubeconfig.result).clusters[0].cluster.certificate-authority-data)
   sensitive   = true
   description = "Cluster CA Certificate"
 }
