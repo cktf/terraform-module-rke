@@ -41,7 +41,7 @@ module "leader" {
   }
 
   connection = each.value.connection
-  create     = <<EOF
+  create     = <<-EOF
     cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
     ${each.value.registries}
     EOFX
@@ -71,7 +71,7 @@ module "servers" {
   }
 
   connection = each.value.connection
-  create     = <<EOF
+  create     = <<-EOF
     cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
     ${each.value.registries}
     EOFX
@@ -97,7 +97,7 @@ module "agents" {
   }
 
   connection = each.value.connection
-  create     = <<EOF
+  create     = <<-EOF
     cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
     ${each.value.registries}
     EOFX
