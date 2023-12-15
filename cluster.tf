@@ -48,7 +48,9 @@ module "leader" {
     cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
     ${each.value.configs}
     EOFX
+    ${each.value.pre_exec}
     systemctl restart ${var.type}-server.service
+    ${each.value.post_exec}
   EOF
 }
 
@@ -78,7 +80,9 @@ module "servers" {
     cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
     ${each.value.configs}
     EOFX
+    ${each.value.pre_exec}
     systemctl restart ${var.type}-server.service
+    ${each.value.post_exec}
   EOF
 }
 
@@ -104,7 +108,9 @@ module "agents" {
     cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
     ${each.value.configs}
     EOFX
+    ${each.value.pre_exec}
     systemctl restart ${var.type}-server.service
+    ${each.value.post_exec}
   EOF
 }
 

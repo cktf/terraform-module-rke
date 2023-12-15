@@ -71,6 +71,8 @@ variable "servers" {
     version    = optional(string)
     registries = optional(any, {})
     configs    = optional(any, {})
+    pre_exec   = optional(string, "")
+    post_exec  = optional(string, "")
   }))
   default     = {}
   sensitive   = false
@@ -84,6 +86,8 @@ variable "agents" {
     version    = optional(string)
     registries = optional(any, {})
     configs    = optional(any, {})
+    pre_exec   = optional(string, "")
+    post_exec  = optional(string, "")
   }))
   default     = {}
   sensitive   = false
