@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/cktf/terraform-module-rke/compare/1.20.0...1.20.1) (2023-12-15)
+
+
+### Bug Fixes
+
+* change agent restart command ([e577cf9](https://github.com/cktf/terraform-module-rke/commit/e577cf9e95df120df264aba8952e874155fe6755))
+
 # [1.20.0](https://github.com/cktf/terraform-module-rke/compare/1.19.1...1.20.0) (2023-12-15)
 
 
