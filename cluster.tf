@@ -1,7 +1,3 @@
-locals {
-  leader_key = keys(var.servers)[0]
-}
-
 module "install" {
   source  = "cktf/script/module"
   version = "1.1.0"
@@ -41,7 +37,7 @@ module "leader" {
         "datastore-endpoint"    = var.external_db
       })))
     })
-    if key == local.leader_key
+    if key == local.leader
   }
 
   connection = each.value.connection
@@ -67,7 +63,7 @@ module "servers" {
         "datastore-endpoint"    = var.external_db
       })))
     })
-    if key != local.leader_key
+    if key != local.leader
   }
 
   connection = each.value.connection
@@ -108,7 +104,7 @@ module "addons" {
     for key, val in var.addons : key => base64encode(val)
   }
 
-  connection = var.servers[local.leader_key].connection
+  connection = var.servers[local.leader].connection
   create     = "echo ${each.value} | base64 -d > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
   destroy    = "echo > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
 }
@@ -116,15 +112,15 @@ module "addons" {
 resource "ssh_sensitive_resource" "kubeconfig" {
   depends_on = [module.servers]
 
-  host         = try(var.servers[local.leader_key].connection.host, null)
-  port         = try(var.servers[local.leader_key].connection.port, null)
-  user         = try(var.servers[local.leader_key].connection.user, null)
-  password     = try(var.servers[local.leader_key].connection.password, null)
-  timeout      = try(var.servers[local.leader_key].connection.timeout, null)
-  private_key  = try(var.servers[local.leader_key].connection.private_key, null)
-  agent        = try(var.servers[local.leader_key].connection.agent, null)
-  bastion_host = try(var.servers[local.leader_key].connection.bastion_host, null)
-  bastion_port = try(var.servers[local.leader_key].connection.bastion_port, null)
+  host         = try(var.servers[local.leader].connection.host, null)
+  port         = try(var.servers[local.leader].connection.port, null)
+  user         = try(var.servers[local.leader].connection.user, null)
+  password     = try(var.servers[local.leader].connection.password, null)
+  timeout      = try(var.servers[local.leader].connection.timeout, null)
+  private_key  = try(var.servers[local.leader].connection.private_key, null)
+  agent        = try(var.servers[local.leader].connection.agent, null)
+  bastion_host = try(var.servers[local.leader].connection.bastion_host, null)
+  bastion_port = try(var.servers[local.leader].connection.bastion_port, null)
 
   commands = ["cat /etc/rancher/${var.type}/${var.type}.yaml"]
 }
