@@ -23,7 +23,7 @@ module "rke" {
   type      = "k3s"
   server_ip = "192.168.100.10"
 
-  masters = {
+  servers = {
     1 = {
       connection = {
         type     = "ssh"
@@ -34,7 +34,7 @@ module "rke" {
       }
     }
   }
-  workers = {
+  agents = {
     1 = {
       connection = {
         type     = "ssh"
