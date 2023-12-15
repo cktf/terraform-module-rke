@@ -28,24 +28,28 @@ module "leader" {
   depends_on = [module.install]
   for_each = {
     for key, val in var.servers : key => merge(val, {
-      registries = base64encode(yamlencode(merge(var.registries, val.registries)))
-      configs = base64encode(yamlencode(merge(var.configs, val.configs, {
+      registries = yamlencode(merge(var.registries, val.registries))
+      configs = yamlencode(merge(var.configs, val.configs, {
         "write-kubeconfig-mode" = "0644"
         "agent-token"           = random_password.agent.result
         "token"                 = random_password.server.result
         "cluster-init"          = var.external_db == "" ? "true" : "false"
         "datastore-endpoint"    = var.external_db
-      })))
+      }))
     })
     if key == local.leader
   }
 
   connection = each.value.connection
-  create = join("\n", [
-    "echo ${each.value.registries} | base64 -d > /etc/rancher/${var.type}/registries.yaml",
-    "echo ${each.value.configs} | base64 -d > /etc/rancher/${var.type}/config.yaml",
-    "systemctl restart ${var.type}-server.service"
-  ])
+  create     = <<EOF
+    cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
+    ${each.value.registries}
+    EOFX
+    cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
+    ${each.value.configs}
+    EOFX
+    systemctl restart ${var.type}-server.service
+  EOF
 }
 
 module "servers" {
@@ -54,24 +58,28 @@ module "servers" {
   depends_on = [module.leader]
   for_each = {
     for key, val in var.servers : key => merge(val, {
-      registries = base64encode(yamlencode(merge(var.registries, val.registries)))
-      configs = base64encode(yamlencode(merge(var.configs, val.configs, {
+      registries = yamlencode(merge(var.registries, val.registries))
+      configs = yamlencode(merge(var.configs, val.configs, {
         "write-kubeconfig-mode" = "0644"
         "agent-token"           = random_password.agent.result
         "token"                 = random_password.server.result
         "server"                = var.external_db == "" ? "https://${var.server_ip}:${local.port}" : ""
         "datastore-endpoint"    = var.external_db
-      })))
+      }))
     })
     if key != local.leader
   }
 
   connection = each.value.connection
-  create = join("\n", [
-    "echo ${each.value.registries} | base64 -d > /etc/rancher/${var.type}/registries.yaml",
-    "echo ${each.value.configs} | base64 -d > /etc/rancher/${var.type}/config.yaml",
-    "systemctl restart ${var.type}-server.service"
-  ])
+  create     = <<EOF
+    cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
+    ${each.value.registries}
+    EOFX
+    cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
+    ${each.value.configs}
+    EOFX
+    systemctl restart ${var.type}-server.service
+  EOF
 }
 
 module "agents" {
@@ -80,32 +88,34 @@ module "agents" {
   depends_on = [module.servers]
   for_each = {
     for key, val in var.agents : key => merge(val, {
-      registries = base64encode(yamlencode(merge(var.registries, val.registries)))
-      configs = base64encode(yamlencode(merge(var.configs, val.configs, {
+      registries = yamlencode(merge(var.registries, val.registries))
+      configs = yamlencode(merge(var.configs, val.configs, {
         "server" = "https://${var.server_ip}:${local.port}"
         "token"  = random_password.agent.result
-      })))
+      }))
     })
   }
 
   connection = each.value.connection
-  create = join("\n", [
-    "echo ${each.value.registries} | base64 -d > /etc/rancher/${var.type}/registries.yaml",
-    "echo ${each.value.configs} | base64 -d > /etc/rancher/${var.type}/config.yaml",
-    "systemctl restart ${var.type}-agent.service"
-  ])
+  create     = <<EOF
+    cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
+    ${each.value.registries}
+    EOFX
+    cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
+    ${each.value.configs}
+    EOFX
+    systemctl restart ${var.type}-server.service
+  EOF
 }
 
 module "addons" {
   source     = "cktf/script/module"
   version    = "1.1.0"
+  for_each   = var.addons
   depends_on = [module.servers]
-  for_each = {
-    for key, val in var.addons : key => base64encode(val)
-  }
 
   connection = var.servers[local.leader].connection
-  create     = "echo ${each.value} | base64 -d > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
+  create     = "echo ${base64encode(each.value)} | base64 -d > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
   destroy    = "echo > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
 }
 
