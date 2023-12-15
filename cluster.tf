@@ -109,7 +109,7 @@ module "agents" {
     ${each.value.configs}
     EOFX
     ${each.value.pre_exec}
-    systemctl restart ${var.type}-server.service
+    systemctl restart ${var.type}-agent.service
     ${each.value.post_exec}
   EOF
 }
