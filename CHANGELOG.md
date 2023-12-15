@@ -1,3 +1,17 @@
+# [1.20.0](https://github.com/cktf/terraform-module-rke/compare/1.19.1...1.20.0) (2023-12-15)
+
+
+### Bug Fixes
+
+* change leader key local variable ([abaf6a7](https://github.com/cktf/terraform-module-rke/commit/abaf6a7e8797196434550d2821e06338beee214a))
+* escape spaces in EOF ([11061b1](https://github.com/cktf/terraform-module-rke/commit/11061b15b649b1653f7ba64aaa4f0638207a69a7))
+
+
+### Features
+
+* add pre_exec and post_exec scripts ([63d0c3b](https://github.com/cktf/terraform-module-rke/commit/63d0c3b9ed85690b784fcb7b980d61f580b2c8c0))
+* add support for script evaluation in config files ([484c3e0](https://github.com/cktf/terraform-module-rke/commit/484c3e08fcd4be304f24274fe62053db0bde2946))
+
 ## [1.19.1](https://github.com/cktf/terraform-module-rke/compare/1.19.0...1.19.1) (2023-12-13)
 
 
