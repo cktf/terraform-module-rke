@@ -4,7 +4,7 @@
 ![release](https://img.shields.io/github/v/release/cktf/terraform-module-rke?display_name=tag)
 ![license](https://img.shields.io/github/license/cktf/terraform-module-rke)
 
-**RKE** is a Terraform module useful for bootstraping **HA** kubernetes clusters using **k3s** and **rke2** on **Remote Machines**
+Terraform alternative to [k3sup](https://github.com/alexellis/k3sup), which supports both [K3s](https://k3s.io/) and [RKE2](https://rke2.io/)
 
 ## Installation
 
