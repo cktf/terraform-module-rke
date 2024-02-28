@@ -128,15 +128,18 @@ module "addons" {
 resource "ssh_sensitive_resource" "kubeconfig" {
   depends_on = [module.servers]
 
-  host         = try(var.servers[local.leader].connection.host, null)
-  port         = try(var.servers[local.leader].connection.port, null)
-  user         = try(var.servers[local.leader].connection.user, null)
-  password     = try(var.servers[local.leader].connection.password, null)
-  timeout      = try(var.servers[local.leader].connection.timeout, null)
-  private_key  = try(var.servers[local.leader].connection.private_key, null)
-  agent        = try(var.servers[local.leader].connection.agent, null)
-  bastion_host = try(var.servers[local.leader].connection.bastion_host, null)
-  bastion_port = try(var.servers[local.leader].connection.bastion_port, null)
+  host                = try(var.servers[local.leader].connection.host, null)
+  port                = try(var.servers[local.leader].connection.port, null)
+  user                = try(var.servers[local.leader].connection.user, null)
+  password            = try(var.servers[local.leader].connection.password, null)
+  private_key         = try(var.servers[local.leader].connection.private_key, null)
+  timeout             = try(var.servers[local.leader].connection.timeout, null)
+  agent               = try(var.servers[local.leader].connection.agent, null)
+  bastion_host        = try(var.servers[local.leader].connection.bastion_host, null)
+  bastion_port        = try(var.servers[local.leader].connection.bastion_port, null)
+  bastion_user        = try(var.servers[local.leader].connection.bastion_user, null)
+  bastion_password    = try(var.servers[local.leader].connection.bastion_password, null)
+  bastion_private_key = try(var.servers[local.leader].connection.bastion_private_key, null)
 
   commands = ["cat /etc/rancher/${var.type}/${var.type}.yaml"]
 }
