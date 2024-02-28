@@ -1,3 +1,11 @@
+## [1.20.2](https://github.com/cktf/terraform-module-rke/compare/1.20.1...1.20.2) (2024-02-28)
+
+
+### Bug Fixes
+
+* add bastion private_key ([c4f9957](https://github.com/cktf/terraform-module-rke/commit/c4f9957becd1924f42362cd53c1cea0289f32d26))
+* change CI tools version ([14d2574](https://github.com/cktf/terraform-module-rke/commit/14d257443edc77872716678e3d21d0c69917c5d0))
+
 ## [1.20.1](https://github.com/cktf/terraform-module-rke/compare/1.20.0...1.20.1) (2023-12-15)
 
 
