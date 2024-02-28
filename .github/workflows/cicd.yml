@@ -13,7 +13,7 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: hashicorp/setup-terraform@v1
               with:
                   terraform_version: "1.6.5"
@@ -30,7 +30,7 @@ jobs:
         needs: build
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - run: echo Test
 
@@ -39,7 +39,10 @@ jobs:
         runs-on: ubuntu-latest
         if: github.event_name == 'push'
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
 
             - run: npm i -g semantic-release @semantic-release/changelog @semantic-release/github @semantic-release/git
             - run: cat .github/.releaserc.yml | envsubst > .releaserc.yml && semantic-release
