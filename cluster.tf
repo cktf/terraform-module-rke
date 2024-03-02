@@ -49,7 +49,7 @@ module "leader" {
     ${each.value.configs}
     EOFX
     ${each.value.pre_exec}
-    systemctl restart ${var.type}-server.service
+    systemctl restart ${var.type}-server.service || true
     ${each.value.post_exec}
   EOF
 }
@@ -81,7 +81,7 @@ module "servers" {
     ${each.value.configs}
     EOFX
     ${each.value.pre_exec}
-    systemctl restart ${var.type}-server.service
+    systemctl restart ${var.type}-server.service || true
     ${each.value.post_exec}
   EOF
 }
@@ -109,7 +109,7 @@ module "agents" {
     ${each.value.configs}
     EOFX
     ${each.value.pre_exec}
-    systemctl restart ${var.type}-agent.service
+    systemctl restart ${var.type}-agent.service || true
     ${each.value.post_exec}
   EOF
 }
