@@ -13,7 +13,7 @@ module "install" {
     "export INSTALL_${upper(var.type)}_EXEC=${each.value.exec}",
     "export INSTALL_${upper(var.type)}_CHANNEL=${each.value.channel != null ? each.value.channel : var.channel}",
     "export INSTALL_${upper(var.type)}_VERSION=${each.value.version != null ? each.value.version : var.version_}",
-    "curl -sfL https://get.${var.type}.io | sh -",
+    "curl -sfL https://get.${var.type}.io | sh - && sleep 10",
     "systemctl enable ${var.type}-${each.value.exec}.service",
     "mkdir -p /etc/rancher/${var.type} /var/lib/rancher/${var.type}/${each.value.exec}/manifests",
   ])
@@ -89,7 +89,7 @@ module "servers" {
 module "agents" {
   source     = "cktf/script/module"
   version    = "1.1.0"
-  depends_on = [module.servers]
+  depends_on = [module.leader]
   for_each = {
     for key, val in var.agents : key => merge(val, {
       registries = yamlencode(merge(var.registries, val.registries))
@@ -118,7 +118,7 @@ module "addons" {
   source     = "cktf/script/module"
   version    = "1.1.0"
   for_each   = var.addons
-  depends_on = [module.servers]
+  depends_on = [module.leader]
 
   connection = var.servers[local.leader].connection
   create     = "echo ${base64encode(each.value)} | base64 -d > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
@@ -126,7 +126,7 @@ module "addons" {
 }
 
 resource "ssh_sensitive_resource" "kubeconfig" {
-  depends_on = [module.servers]
+  depends_on = [module.leader]
 
   host                = try(var.servers[local.leader].connection.host, null)
   port                = try(var.servers[local.leader].connection.port, null)
