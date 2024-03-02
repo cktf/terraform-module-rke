@@ -1,3 +1,11 @@
+## [1.20.3](https://github.com/cktf/terraform-module-rke/compare/1.20.2...1.20.3) (2024-03-02)
+
+
+### Bug Fixes
+
+* ignore systemctl first restart error ([7cc560e](https://github.com/cktf/terraform-module-rke/commit/7cc560e3a04d04b0b04ef9fa7c0ffe56ae020452))
+* wait addons, agents for leader to be ready ([f19fb67](https://github.com/cktf/terraform-module-rke/commit/f19fb67152d63cf00c7faa500d1b38f6fd3afac0))
+
 ## [1.20.2](https://github.com/cktf/terraform-module-rke/compare/1.20.1...1.20.2) (2024-02-28)
 
 
