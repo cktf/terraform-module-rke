@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/cktf/terraform-module-rke/compare/1.23.0...1.23.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* sensitive leaders problem ([d3a3067](https://github.com/cktf/terraform-module-rke/commit/d3a306703addfb96e5ec47df1ae36f3e58b8ee9f))
+
 # [1.23.0](https://github.com/cktf/terraform-module-rke/compare/1.22.0...1.23.0) (2024-03-06)
 
 
