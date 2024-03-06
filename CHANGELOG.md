@@ -1,3 +1,10 @@
+## [1.21.1](https://github.com/cktf/terraform-module-rke/compare/1.21.0...1.21.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* use for_each for nullable servers ([11b7711](https://github.com/cktf/terraform-module-rke/commit/11b7711fe63f1eda12d228bb7584e066fe0ab920))
+
 # [1.21.0](https://github.com/cktf/terraform-module-rke/compare/1.20.3...1.21.0) (2024-03-06)
 
 
