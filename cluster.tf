@@ -1,21 +1,21 @@
 locals {
   leader_configs = {
     "write-kubeconfig-mode" = "0644"
-    "agent-token"           = random_password.agent.result
-    "token"                 = random_password.server.result
+    "agent-token"           = var.agent_token
+    "token"                 = var.server_token
     "cluster-init"          = var.external_db == "" ? "true" : "false"
     "datastore-endpoint"    = var.external_db
   }
   server_configs = {
     "write-kubeconfig-mode" = "0644"
-    "agent-token"           = random_password.agent.result
-    "token"                 = random_password.server.result
+    "agent-token"           = var.agent_token
+    "token"                 = var.server_token
     "server"                = var.external_db == "" ? "https://${var.server_ip}:${local.port}" : ""
     "datastore-endpoint"    = var.external_db
   }
   agent_configs = {
     "server" = "https://${var.server_ip}:${local.port}"
-    "token"  = random_password.agent.result
+    "token"  = var.agent_token
   }
 }
 

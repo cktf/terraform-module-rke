@@ -10,12 +10,6 @@ output "port" {
   description = "Cluster Port"
 }
 
-output "token" {
-  value       = random_password.agent.result
-  sensitive   = true
-  description = "Cluster Token"
-}
-
 output "client_key" {
   value       = base64decode(yamldecode(ssh_sensitive_resource.kubeconfig.result).users[0].user.client-key-data)
   sensitive   = true

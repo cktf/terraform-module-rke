@@ -64,6 +64,20 @@ variable "external_db" {
   description = "Cluster External DB"
 }
 
+variable "agent_token" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "Cluster Agent Token"
+}
+
+variable "server_token" {
+  type        = string
+  default     = ""
+  sensitive   = true
+  description = "Cluster Server Token"
+}
+
 variable "servers" {
   type = map(object({
     connection = any
