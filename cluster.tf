@@ -22,22 +22,16 @@ locals {
 module "leader" {
   source     = "cktf/script/module"
   version    = "1.1.0"
+  for_each   = { for key, val in var.servers : key => val if key == local.leader }
   depends_on = [module.install]
-  for_each = {
-    for key, val in var.servers : key => merge(val, {
-      registries = yamlencode(merge(var.registries, val.registries))
-      configs    = yamlencode(merge(var.configs, val.configs, local.leader_configs))
-    })
-    if key == local.leader
-  }
 
   connection = each.value.connection
   create     = <<-EOF
     cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
-    ${each.value.registries}
+    ${yamlencode(merge(var.registries, each.value.registries))}
     EOFX
     cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
-    ${each.value.configs}
+    ${yamlencode(merge(var.configs, each.value.configs, local.leader_configs))}
     EOFX
     ${each.value.pre_exec}
     systemctl restart ${var.type}-server.service || true
@@ -48,22 +42,16 @@ module "leader" {
 module "servers" {
   source     = "cktf/script/module"
   version    = "1.1.0"
+  for_each   = { for key, val in var.servers : key => val if key != local.leader }
   depends_on = [module.leader]
-  for_each = {
-    for key, val in var.servers : key => merge(val, {
-      registries = yamlencode(merge(var.registries, val.registries))
-      configs    = yamlencode(merge(var.configs, val.configs, local.server_configs))
-    })
-    if key != local.leader
-  }
 
   connection = each.value.connection
   create     = <<-EOF
     cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
-    ${each.value.registries}
+    ${yamlencode(merge(var.registries, each.value.registries))}
     EOFX
     cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
-    ${each.value.configs}
+    ${yamlencode(merge(var.configs, each.value.configs, local.server_configs))}
     EOFX
     ${each.value.pre_exec}
     systemctl restart ${var.type}-server.service || true
@@ -74,21 +62,16 @@ module "servers" {
 module "agents" {
   source     = "cktf/script/module"
   version    = "1.1.0"
+  for_each   = var.agents
   depends_on = [module.leader]
-  for_each = {
-    for key, val in var.agents : key => merge(val, {
-      registries = yamlencode(merge(var.registries, val.registries))
-      configs    = yamlencode(merge(var.configs, val.configs, local.agent_configs))
-    })
-  }
 
   connection = each.value.connection
   create     = <<-EOF
     cat <<-EOFX | tee /etc/rancher/${var.type}/registries.yaml > /dev/null
-    ${each.value.registries}
+    ${yamlencode(merge(var.registries, each.value.registries))}
     EOFX
     cat <<-EOFX | tee /etc/rancher/${var.type}/config.yaml > /dev/null
-    ${each.value.configs}
+    ${yamlencode(merge(var.configs, each.value.configs, local.agent_configs))}
     EOFX
     ${each.value.pre_exec}
     systemctl restart ${var.type}-agent.service || true
@@ -99,15 +82,16 @@ module "agents" {
 module "addons" {
   source     = "cktf/script/module"
   version    = "1.1.0"
-  for_each   = var.addons
+  for_each   = { for key, val in var.addons : key => val if local.leader != null }
   depends_on = [module.leader]
 
-  connection = var.servers[local.leader].connection
+  connection = try(var.servers[local.leader].connection, null)
   create     = "echo ${base64encode(each.value)} | base64 -d > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
   destroy    = "echo > /var/lib/rancher/${var.type}/server/manifests/${each.key}.yaml"
 }
 
 resource "ssh_sensitive_resource" "kubeconfig" {
+  count      = (local.leader != null) ? 1 : 0
   depends_on = [module.leader]
 
   host                = try(var.servers[local.leader].connection.host, null)

@@ -9,6 +9,6 @@ terraform {
 }
 
 locals {
-  port   = var.type == "k3s" ? "6443" : "9345"
-  leader = keys(var.servers)[0]
+  port   = (var.type == "k3s") ? "6443" : "9345"
+  leader = try(keys(var.servers)[0], null)
 }
