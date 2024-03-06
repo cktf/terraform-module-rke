@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/cktf/terraform-module-rke/compare/1.21.1...1.22.0) (2024-03-06)
+
+
+### Features
+
+* use try values instead of for_each in kubeconfig resource ([128be34](https://github.com/cktf/terraform-module-rke/commit/128be349cce0f85c38828fa199c7985a6fc9145d))
+
 ## [1.21.1](https://github.com/cktf/terraform-module-rke/compare/1.21.0...1.21.1) (2024-03-06)
 
 
