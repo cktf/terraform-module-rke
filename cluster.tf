@@ -91,7 +91,7 @@ module "agents" {
 module "addons" {
   source     = "cktf/script/module"
   version    = "1.1.0"
-  for_each   = { for key, val in var.addons : key => val if local.leaders != {} }
+  for_each   = { for key, val in var.addons : key => val if length(keys(local.leaders)) > 0 }
   depends_on = [module.leader]
 
   connection = try(values(local.leaders)[0].connection, null)
@@ -100,7 +100,7 @@ module "addons" {
 }
 
 resource "ssh_sensitive_resource" "kubeconfig" {
-  count      = (local.leaders != {}) ? 1 : 0
+  count      = (length(keys(local.leaders)) > 0) ? 1 : 0
   depends_on = [module.leader]
 
   host                = try(values(local.leaders)[0].connection.host, null)
