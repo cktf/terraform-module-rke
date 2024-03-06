@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/cktf/terraform-module-rke/compare/1.22.0...1.23.0) (2024-03-06)
+
+
+### Features
+
+* add cluster credentials output ([f116950](https://github.com/cktf/terraform-module-rke/commit/f11695008df564ce2d82bf6e8122e8334b1b3959))
+
 # [1.22.0](https://github.com/cktf/terraform-module-rke/compare/1.21.1...1.22.0) (2024-03-06)
 
 
