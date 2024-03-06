@@ -20,8 +20,10 @@ terraform init
 module "rke" {
   source = "cktf/rke/module"
 
-  type      = "k3s"
-  server_ip = "192.168.100.10"
+  type         = "k3s"
+  server_ip    = "192.168.100.10"
+  agent_token  = "<REDACTED>"
+  server_token = "<REDACTED>"
 
   servers = {
     1 = {
