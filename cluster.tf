@@ -100,21 +100,21 @@ module "addons" {
 }
 
 resource "ssh_sensitive_resource" "kubeconfig" {
-  for_each   = local.leaders
+  count      = (local.leaders != {}) ? 1 : 0
   depends_on = [module.leader]
 
-  host                = try(each.value.connection.host, null)
-  port                = try(each.value.connection.port, null)
-  user                = try(each.value.connection.user, null)
-  password            = try(each.value.connection.password, null)
-  private_key         = try(each.value.connection.private_key, null)
-  timeout             = try(each.value.connection.timeout, null)
-  agent               = try(each.value.connection.agent, null)
-  bastion_host        = try(each.value.connection.bastion_host, null)
-  bastion_port        = try(each.value.connection.bastion_port, null)
-  bastion_user        = try(each.value.connection.bastion_user, null)
-  bastion_password    = try(each.value.connection.bastion_password, null)
-  bastion_private_key = try(each.value.connection.bastion_private_key, null)
+  host                = try(values(local.leaders)[0].connection.host, null)
+  port                = try(values(local.leaders)[0].connection.port, null)
+  user                = try(values(local.leaders)[0].connection.user, null)
+  password            = try(values(local.leaders)[0].connection.password, null)
+  private_key         = try(values(local.leaders)[0].connection.private_key, null)
+  timeout             = try(values(local.leaders)[0].connection.timeout, null)
+  agent               = try(values(local.leaders)[0].connection.agent, null)
+  bastion_host        = try(values(local.leaders)[0].connection.bastion_host, null)
+  bastion_port        = try(values(local.leaders)[0].connection.bastion_port, null)
+  bastion_user        = try(values(local.leaders)[0].connection.bastion_user, null)
+  bastion_password    = try(values(local.leaders)[0].connection.bastion_password, null)
+  bastion_private_key = try(values(local.leaders)[0].connection.bastion_private_key, null)
 
   commands = ["cat /etc/rancher/${var.type}/${var.type}.yaml"]
 }

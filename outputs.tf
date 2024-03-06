@@ -11,7 +11,7 @@ output "port" {
 }
 
 output "kubeconfig" {
-  value       = try(values(ssh_sensitive_resource.kubeconfig)[0].result, null)
+  value       = try(ssh_sensitive_resource.kubeconfig[0].result, null)
   sensitive   = true
   description = "Cluster Kubernetes Config"
 }
