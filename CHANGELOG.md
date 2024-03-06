@@ -1,3 +1,13 @@
+# [1.21.0](https://github.com/cktf/terraform-module-rke/compare/1.20.3...1.21.0) (2024-03-06)
+
+
+### Features
+
+* extract token generation ([b31d985](https://github.com/cktf/terraform-module-rke/commit/b31d98530f0b8392183f8ee080d705732462b7fe))
+* separate install module ([6c14817](https://github.com/cktf/terraform-module-rke/commit/6c14817949ea3532c83e56f4003e62058a6d80a7))
+* split configs as local variables ([51a2f23](https://github.com/cktf/terraform-module-rke/commit/51a2f23ecbf5240bd06126bc5c005e45344443a7))
+* support agent only provisioning ([20c9874](https://github.com/cktf/terraform-module-rke/commit/20c98743cdad3e969262b8ef73c7dd695213950b))
+
 ## [1.20.3](https://github.com/cktf/terraform-module-rke/compare/1.20.2...1.20.3) (2024-03-02)
 
 
