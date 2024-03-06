@@ -1,3 +1,24 @@
+locals {
+  leader_configs = {
+    "write-kubeconfig-mode" = "0644"
+    "agent-token"           = random_password.agent.result
+    "token"                 = random_password.server.result
+    "cluster-init"          = var.external_db == "" ? "true" : "false"
+    "datastore-endpoint"    = var.external_db
+  }
+  server_configs = {
+    "write-kubeconfig-mode" = "0644"
+    "agent-token"           = random_password.agent.result
+    "token"                 = random_password.server.result
+    "server"                = var.external_db == "" ? "https://${var.server_ip}:${local.port}" : ""
+    "datastore-endpoint"    = var.external_db
+  }
+  agent_configs = {
+    "server" = "https://${var.server_ip}:${local.port}"
+    "token"  = random_password.agent.result
+  }
+}
+
 module "install" {
   source  = "cktf/script/module"
   version = "1.1.0"
@@ -29,13 +50,7 @@ module "leader" {
   for_each = {
     for key, val in var.servers : key => merge(val, {
       registries = yamlencode(merge(var.registries, val.registries))
-      configs = yamlencode(merge(var.configs, val.configs, {
-        "write-kubeconfig-mode" = "0644"
-        "agent-token"           = random_password.agent.result
-        "token"                 = random_password.server.result
-        "cluster-init"          = var.external_db == "" ? "true" : "false"
-        "datastore-endpoint"    = var.external_db
-      }))
+      configs    = yamlencode(merge(var.configs, val.configs, local.leader_configs))
     })
     if key == local.leader
   }
@@ -61,13 +76,7 @@ module "servers" {
   for_each = {
     for key, val in var.servers : key => merge(val, {
       registries = yamlencode(merge(var.registries, val.registries))
-      configs = yamlencode(merge(var.configs, val.configs, {
-        "write-kubeconfig-mode" = "0644"
-        "agent-token"           = random_password.agent.result
-        "token"                 = random_password.server.result
-        "server"                = var.external_db == "" ? "https://${var.server_ip}:${local.port}" : ""
-        "datastore-endpoint"    = var.external_db
-      }))
+      configs    = yamlencode(merge(var.configs, val.configs, local.local.server_configs))
     })
     if key != local.leader
   }
@@ -93,10 +102,7 @@ module "agents" {
   for_each = {
     for key, val in var.agents : key => merge(val, {
       registries = yamlencode(merge(var.registries, val.registries))
-      configs = yamlencode(merge(var.configs, val.configs, {
-        "server" = "https://${var.server_ip}:${local.port}"
-        "token"  = random_password.agent.result
-      }))
+      configs    = yamlencode(merge(var.configs, val.configs, local.agent_configs))
     })
   }
 
