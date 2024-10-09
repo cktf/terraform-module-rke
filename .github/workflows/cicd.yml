@@ -14,10 +14,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: hashicorp/setup-terraform@v1
+            - uses: hashicorp/setup-terraform@v3
               with:
-                  terraform_version: "1.6.5"
-            - uses: actions/cache@v2
+                  terraform_version: "1.9.5"
+            - uses: actions/cache@v4
               with:
                   path: .terraform/
                   key: ${{ hashFiles('.terraform.lock.hcl') }}
@@ -26,16 +26,8 @@ jobs:
             - run: terraform fmt -check
             - run: terraform validate -no-color
 
-    test:
+    bump:
         needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-
-            - run: echo Test
-
-    release:
-        needs: test
         runs-on: ubuntu-latest
         if: github.event_name == 'push'
         steps:
