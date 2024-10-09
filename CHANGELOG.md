@@ -1,3 +1,10 @@
+## [1.23.2](https://github.com/cktf/terraform-module-rke/compare/1.23.1...1.23.2) (2024-10-09)
+
+
+### Bug Fixes
+
+* upgrade CI/CD ([45743d8](https://github.com/cktf/terraform-module-rke/commit/45743d852830855c185f91c27109a13f90446c1c))
+
 ## [1.23.1](https://github.com/cktf/terraform-module-rke/compare/1.23.0...1.23.1) (2024-03-06)
 
 
