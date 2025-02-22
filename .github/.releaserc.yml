@@ -1,12 +1,6 @@
-tagFormat: $${q}{version}
+tagFormat: ${version}
 branches:
     - main
-    - master
-    - +([0-9])?(.{+([0-9]),x}).x
-    - { name: next, prerelease: true }
-    - { name: beta, prerelease: true }
-    - { name: alpha, prerelease: true }
-    - { name: stable, prerelease: true }
 plugins:
     - "@semantic-release/commit-analyzer"
     - "@semantic-release/release-notes-generator"
