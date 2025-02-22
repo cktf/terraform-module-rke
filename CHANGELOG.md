@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/cktf/terraform-module-rke/compare/1.23.2...1.24.0) (2025-02-22)
+
+
+### Features
+
+* add new CI ([fb787ae](https://github.com/cktf/terraform-module-rke/commit/fb787ae56647164e98ebe09fcf53443a42e0f9ce))
+
 ## [1.23.2](https://github.com/cktf/terraform-module-rke/compare/1.23.1...1.23.2) (2024-10-09)
 
 
